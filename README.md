@@ -4,7 +4,7 @@
 
 ## Team members
 
-TOADD names of the team members
+Kara, Kieara, Brain, Nowah
 TOADD picture of the team
 
 ## App description
