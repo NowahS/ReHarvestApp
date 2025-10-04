@@ -4,9 +4,11 @@
 
 ## Team members
 
-Kara
+### Kara
 ![image](profileImages/KaraChoImage.jpeg)
-Kieara, Brain, Nowah
+### Kieara 
+### Brian
+### Nowah
 TOADD picture of the team
 
 ## App description
