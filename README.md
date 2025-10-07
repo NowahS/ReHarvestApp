@@ -7,8 +7,7 @@
 ### Kara
 ![image](profileImages/KaraChoImage.jpeg)
 ### Kieara
-
-
+![Kieara Blackwood profile photo](kieara_blackwood_photo.jpeg)
 ### Brian
 ### Nowah
 TOADD picture of the team
