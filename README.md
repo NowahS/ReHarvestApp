@@ -1,4 +1,4 @@
-# TEAM TOADD team number
+# TEAM 6
 
 ## App name
 ### ReHarvest
