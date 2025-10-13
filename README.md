@@ -10,6 +10,7 @@
 ![image](profileImages/kiearablackwood.jpg)
 ### Brian
 ### Nowah
+![image](profileImages/NowahStewart.jpg)
 TOADD picture of the team
 
 ## App description
