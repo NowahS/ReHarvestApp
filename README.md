@@ -22,7 +22,7 @@ TOADD picture of the team
 
 ## Product Backlog
 [Requirements Discovery](https://docs.google.com/document/d/1w4ntAx1MYwu7n99UkwP4cQiqfT1W-xl33NMqhZX0eAQ/edit?tab=t.0)
-[Product Backlog Validation]()
+[Product Backlog Validation](https://paceuniversity-my.sharepoint.com/:w:/g/personal/so35931n_pace_edu/EbGWR2tb9QRMjv0XIB23UEkBZb59fyiaiqdI8XJHVgnhjQ?e=AtOTx4)
 [Product Backlog](https://docs.google.com/spreadsheets/d/1voAlLn6wZZea9wKupuXWM1POCDhOYgSrEWuqKm0XB5s/edit?gid=8#gid=8)
 
 ## Architecture & Design
