@@ -3,13 +3,14 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
-export const signUp = async (email, password) => {
+export const signUp = async (username, email, password) => {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
   const user = userCredential.user;
 
   await setDoc(doc(db, "users", user.uid), {
     uid: user.uid,
     email: user.email,
+    username: username,
     createdAt: new Date().toISOString(),
   });
 
