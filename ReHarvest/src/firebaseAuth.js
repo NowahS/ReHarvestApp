@@ -4,17 +4,24 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut
 import { doc, setDoc } from "firebase/firestore";
 
 export const signUp = async (username, email, password) => {
-  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  const user = userCredential.user;
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-  await setDoc(doc(db, "users", user.uid), {
-    uid: user.uid,
-    email: user.email,
-    username: username,
-    createdAt: new Date().toISOString(),
-  });
+    await setDoc(doc(db, "users", user.uid), {
+      uid: user.uid,
+      email: user.email,
+      username: username,
+      createdAt: new Date().toISOString(),
+    });
 
-  return user;
+    console.log("Sign up successful")
+    return user;
+  }
+  catch (error){
+    console.log("There was a sign up error");
+    throw error
+  }
 };
 
 export const logIn = (email, password) => {
