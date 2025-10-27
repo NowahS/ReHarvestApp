@@ -11,9 +11,16 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
+<<<<<<< HEAD
+    "react": "^19.2.0",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.4"
+=======
     "firebase": "^12.4.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
+>>>>>>> c022f6867c244dda76cd163b40e6839c391602aa
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
