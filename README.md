@@ -8,8 +8,6 @@
 ![image](profileImages/KaraChoImage.jpeg)
 ### Kieara
 ![image](profileImages/kiearablackwood.jpg)
-### Brian
-![image](profileImages/BrianMangaru.jpg)
 ### Nowah
 ![image](profileImages/NowahStewart.jpg.jpg)
 TOADD picture of the team
