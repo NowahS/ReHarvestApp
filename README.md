@@ -8,8 +8,6 @@
 ![image](profileImages/KaraChoImage.jpeg)
 ### Kieara
 ![image](profileImages/kiearablackwood.jpg)
-### Brian
-![image](profileImages/BrianMangaru.jpg)
 ### Nowah
 ![image](profileImages/NowahStewart.jpg.jpg)
 TOADD picture of the team
@@ -35,7 +33,7 @@ TOADD picture of the team
 ### Sprint 1
 
 * [Sprint planning]()
-* [Scrums]()
+* [Scrums](https://docs.google.com/document/d/1YKt-efiRopCJf_IgGwaM3aUJgVgMu5sngq7lSoSOBiU/edit?usp=sharing)
 * [Sprint demo video]()
 * [Sprint retrospective]()
 
