@@ -1,7 +1,7 @@
 import { auth, db } from "./firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut 
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 export const signUp = async (username, email, password) => {
   try {
@@ -12,7 +12,7 @@ export const signUp = async (username, email, password) => {
       uid: user.uid,
       email: user.email,
       username: username,
-      createdAt: new Date().toISOString(),
+      createdAt: serverTimestamp(),
     });
 
     console.log("Sign up successful")
