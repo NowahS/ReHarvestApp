@@ -24,8 +24,17 @@ export const signUp = async (username, email, password) => {
   }
 };
 
-export const logIn = (email, password) => {
-  return signInWithEmailAndPassword(auth, email, password);
+export const logIn = async (email, password) => {
+  try{
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    console.log("Log in Successful")
+    return user
+  }
+  catch(error){
+    console.log("There was a log in error");
+    throw error
+  }
 };
 
 export const logOut = () => signOut(auth);
