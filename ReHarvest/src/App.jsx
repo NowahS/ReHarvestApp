@@ -26,15 +26,7 @@ function App() {
   }
   return (
     <>
-    <Router>
-        <Container>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path= "/login" element= {<Login />} />
-            <Route path= "/signup" element= {<SignUp />} />
-          </Routes>
-        </Container>
-    </Router>
+      <UserProfile/> 
     </>
   )
 }
