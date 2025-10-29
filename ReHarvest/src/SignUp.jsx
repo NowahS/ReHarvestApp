@@ -1,10 +1,18 @@
 import React, {useState} from 'react'
 import {signUp} from '../firebaseAuth'
 import {Button} from 'react-bootstrap'
+import {useNavigate} from 'react-router-dom'
+
+
 let SignUp = () => {
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+
+    const navigate = useNavigate()
+    const handleNavigation = () => {
+        navigate("/home")
+    }
 
     const submitSignUp = async (e) => {
         try{
@@ -33,7 +41,7 @@ let SignUp = () => {
             <label>Confirm Password</label>
             <input placeholder = "Confirm your password"/>
         </form>
-        <Button>Join Now</Button>
+        <Button onClick={handleNavigation}>Join Now</Button>
         </>
     )
 }
