@@ -15,7 +15,7 @@ function Login(){
         try{
             await logIn(email, password)
             alert("Successfully logged in")
-            navigate('/')
+            navigate('/home')
 
         }
         catch(error){
