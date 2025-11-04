@@ -1,12 +1,28 @@
 import React from "react"
 import Nav from "react-bootstrap/Nav"
-import {Form, FormControl, Button} from "react-bootstrap"
+import {Form, FormControl, Buttonm, ButtonGroup, Stack, Button} from "react-bootstrap"
 
 function Home(){
 
     const[query, setQuery] = userState(' ')
     const handleSearch = () => {
         console.log('Searching for:', query)
+    }
+
+    const handleVegan= () => {
+        console.log('Vegan filter')
+    }
+    const handleKeto= () => {
+        console.log('Keto filter')
+    }
+    const handleGlutenFree= () => {
+        console.log('Gluten Free filter')
+    }
+    const handleLactose= () => {
+        console.log('Lactose filter')
+    }
+    const handleNutFree= () => {
+        console.log('Nut Free filter')
     }
 
     return(
@@ -38,7 +54,53 @@ function Home(){
             <Button variant= "outline-success" onClick={handleSearch}></Button>
         </Form>
 
+        {/*Filter buttons*/}
+        <Button 
+        variant="success" 
+        size="lg" 
+        onClick={handleVegan} 
+      >
+        VEGAN
+      </Button>
+      <Button 
+        variant="warning" 
+        size="lg" 
+        onClick={handleKeto} 
+      >
+        Keto
+      </Button>
+
+      <Button 
+        variant="danger" 
+        size="lg" 
+        onClick={handleGlutenFree} 
+      >
+        Gluten Free
+      </Button>
+
+      <Button 
+        variant="info" 
+        size="lg" 
+        onClick={handleLactose} 
+      >
+        Lactose
+      </Button>
+
+      <Button 
+        variant="secondary" 
+        size="lg" 
+        onClick={handleNutFree} 
+      >
+        Nut Free
+      </Button>
+
+
         <h2>Latest Post</h2>
+
+        <Post 
+            initialLikes={15}
+            initialComments={[]} 
+            />
         </>
 
     )
