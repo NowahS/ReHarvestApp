@@ -58,7 +58,7 @@ const UserProfile = () => {
                                     <Form.Control
                                         as="textarea"
                                         name="bio"
-                                        rows={4}
+                                        rows={10}
                                         placeholder="Tell us about yourself..."
                                         value={profileData.bio}
                                         onChange={handleInputChange} 
@@ -73,7 +73,7 @@ const UserProfile = () => {
                                     <Form.Control
                                         as="textarea"
                                         name="socials"
-                                        rows={2}
+                                        rows={4}
                                         placeholder="Enter your socials"
                                         value={profileData.socials}
                                         onChange={handleInputChange}
