@@ -29,12 +29,12 @@ function Login(){
                 <div style={{width: "100%", maxwidth: "4000px"}}>
                     <h1 className= "text-center mb-4 fw-bold text-white">Login</h1>
                         <Form.Group className="mb-3" controlId="formGroupEmail">
-                            <Form.Label>Email</Form.Label>
+                            <Form.Label style={{ color: 'white' }}>Email</Form.Label>
                             <Form.Control type="email" placeholder="Enter email" value = {email} onChange={(e) => setEmail(e.target.value)}/>
                          </Form.Group>
 
                         <Form.Group className="mb-4" controlId="formGroupPassword">
-                            <Form.Label>Password</Form.Label>
+                            <Form.Label style={{ color: 'white' }}>Password</Form.Label>
                         <Form.Control type="password" placeholder="Enter password" value = {password} onChange={(e) => setPassword(e.target.value)}/>
                         </Form.Group>
                 </div>

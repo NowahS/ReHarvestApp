@@ -1,10 +1,10 @@
-import React from "react"
+import React, {useState} from "react"
 import Nav from "react-bootstrap/Nav"
 import {Form, FormControl, Button} from "react-bootstrap"
 
 function Home(){
 
-    const[query, setQuery] = userState(' ')
+    const[query, setQuery] = useState(' ')
     const handleSearch = () => {
         console.log('Searching for:', query)
     }
