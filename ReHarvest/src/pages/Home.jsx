@@ -1,8 +1,7 @@
 import React, {useState} from "react"
 import Nav from "react-bootstrap/Nav"
-import {Form, FormControl, Button} from "react-bootstrap"
-import {useState} from 'react'
-import {Form, FormControl, Buttonm, ButtonGroup, Stack, Button} from "react-bootstrap"
+import {Form, FormControl, Button, ButtonGroup, Stack} from "react-bootstrap"
+import Post from "./Post"
 
 function Home(){
 
