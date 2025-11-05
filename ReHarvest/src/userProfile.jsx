@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {uploadPost} from "./firebasePosts"
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import Image from 'react-bootstrap/Image'
@@ -10,6 +11,21 @@ import ProfilePicture from "./assets/profileIcon.png"
 
 
 const UserProfile = () => {
+    const [showAddPost, setShowAddPost] = useState(false);
+    const [addPost, setAddPost] = useState({title: "", content: ""});
+    const [posts, setPosts] = useState([]);
+    const handleAddPost = async (e) => {
+        e.preventDefault();
+        try{
+            await uploadPost(addPost.title, addPost.content);
+            setPosts([...posts, addPost]);
+            setAddPost({title: "", content: ""});
+            setShowAddPost(false);
+        }
+        catch (error){
+            console.log(error)
+        }
+    }
     const [profileData, setProfileData] = useState({
         username: 'Username',
         bio: '',
@@ -92,8 +108,29 @@ const UserProfile = () => {
                             >
                                 {isEditing ? "Save Changes" : "Edit Profile"}
                             </Button>
+                            <br/>
+                            <Button onClick = {() => setShowAddPost(!showAddPost)}>+ Add Post</Button>
+                            {showAddPost && (
+                                <Form onSubmit = {handleAddPost}>
+                                    <Form.Control type="text" placeholder = "Title" value = {addPost.title} onChange = {(e) => setAddPost({...addPost, title: e.target.value})}/>
+                                    <Form.Control as="textarea" placeholder = "Content" value = {addPost.content} onChange = {(e) => setAddPost({...addPost, content: e.target.value})}/>
+                                    <Button type="submit">Submit</Button>
+                                </Form>
+                            )}
                         </Card.Footer>
                     </Card>
+                    <h2 className="w-100">Your Blog Posts</h2>
+                    <div>
+                        {posts.map((post, index) => (
+                            <Card key={index}>
+                                <Card.Body>
+                                    <Card.Title>{post.title}</Card.Title>
+                                    <Card.Text>{post.content}</Card.Text>
+                                    <Card.Text>{post.createdAt}</Card.Text>
+                                </Card.Body>
+                            </Card>
+                        ))}
+                    </div>
                 </Col>
             </Row>
         </Container>

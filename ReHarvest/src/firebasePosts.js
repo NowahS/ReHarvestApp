@@ -1,7 +1,7 @@
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db, auth } from "./firebase";
 
-export const uploadPost = async (title, content, image) => {
+export const uploadPost = async (title, content) => {
   const user = auth.currentUser;
 
   if (!user) {
@@ -17,9 +17,6 @@ export const uploadPost = async (title, content, image) => {
 
   if (content){
     postData.content = content;
-  }
-  if (image){
-    postData.image = image;
   }
 
   try {

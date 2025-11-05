@@ -1,9 +1,30 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import Nav from "react-bootstrap/Nav"
 import {Form, FormControl, Button, ButtonGroup, Stack} from "react-bootstrap"
 import Post from "./Post"
+import {db} from "../firebase"
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
 function Home(){
+    const [posts, setPosts] = useState([]);
+    const showPosts = async () => {
+      try{
+        const postsCollection = collection(db, "posts");
+        const q = query(postsCollection, orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        const postsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setPosts(postsData);
+      }
+      catch (error){
+        console.log(error);
+      }
+    }
+    useEffect(() => {
+      showPosts();
+    }, []);
 
     const[query, setQuery] = useState(' ')
     const handleSearch = () => {
@@ -105,6 +126,14 @@ function Home(){
             initialLikes={15}
             initialComments={[]} 
             />
+          <div>
+            {posts.map((post) => (
+              <div key={post.id} style={{ marginBottom: "10px" }}>
+                <h3>{post.title}</h3>
+                <p>{post.content}</p>  
+              </div>         
+            ))}
+          </div>
         </>
 
     )
