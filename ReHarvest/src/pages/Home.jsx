@@ -1,5 +1,7 @@
 import React, {useState} from "react"
 import Nav from "react-bootstrap/Nav"
+import {Form, FormControl, Button} from "react-bootstrap"
+import {useState} from 'react'
 import {Form, FormControl, Buttonm, ButtonGroup, Stack, Button} from "react-bootstrap"
 
 function Home(){
@@ -29,31 +31,32 @@ function Home(){
         <>
         <Nav fill variant="tabs" defaultActiveKey= "/home">
             <Nav.Item>
-                <Nav.Link href="/home">Active</Nav.Link>
+                <Nav.Link href="/home">Home</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventLey="link-1">About</Nav.Link>
+                <Nav.Link eventKey="link-1">About</Nav.Link>
             </Nav.Item>
             <Nav.Item>
                 <Nav.Link eventKey="link-2">Market</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventKey="link-3">Blog</Nav.Link>
+                <Nav.Link href="/userprofile">Blog</Nav.Link>
             </Nav.Item>
         </Nav>
         
         {/*Code for the search bar*/}
-        <Form inline>
+        <Form inline="true">
             <FormControl
                 type="text"
                 placeholder= "Search"
-                classname="mr-sm-2"
+                className="mr-sm-2"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
             />
             <Button variant= "outline-success" onClick={handleSearch}></Button>
         </Form>
 
+        <h2 className="mb-4 fw-bold text-white">Latest Post</h2>
         {/*Filter buttons*/}
         <Button 
         variant="success" 
