@@ -44,7 +44,7 @@ function Home(){
         </Nav>
         
         {/*Code for the search bar*/}
-        <Form inline="true">
+        <Form className= "d-flex align-items-center mt - 3">
             <FormControl
                 type="text"
                 placeholder= "Search"
@@ -52,7 +52,9 @@ function Home(){
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
             />
-            <Button variant= "outline-success" onClick={handleSearch}></Button>
+            <Button variant= "link" onClick={handleSearch}>
+              <i className= "bi bi-search"></i>
+            </Button>
         </Form>
 
         <h2 className="mb-4 fw-bold text-white">Latest Post</h2>
