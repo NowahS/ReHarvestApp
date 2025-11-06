@@ -9,7 +9,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import ProfilePicture from "./assets/profileIcon.png"
 import Nav from "react-bootstrap/Nav"
-import {FormControl} from "react-bootstrap"
+
 
 
 const UserProfile = () => {
@@ -53,7 +53,7 @@ const UserProfile = () => {
 
     return (
         <>
-        <Nav fill variant="tabs" defaultActiveKey= "/home">
+        <Nav fill variant="tabs" defaultActiveKey= "/userprofile">
             <Nav.Item>
                 <Nav.Link href="/home">Home</Nav.Link>
             </Nav.Item>
