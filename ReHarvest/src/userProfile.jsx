@@ -8,9 +8,12 @@ import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import ProfilePicture from "./assets/profileIcon.png"
+import Nav from "react-bootstrap/Nav"
+import {FormControl} from "react-bootstrap"
 
 
 const UserProfile = () => {
+    const[query, setQuery] = useState(' ')
     const [showAddPost, setShowAddPost] = useState(false);
     const [addPost, setAddPost] = useState({title: "", content: ""});
     const [posts, setPosts] = useState([]);
@@ -49,6 +52,22 @@ const UserProfile = () => {
     };
 
     return (
+        <>
+        <Nav fill variant="tabs" defaultActiveKey= "/home">
+            <Nav.Item>
+                <Nav.Link href="/home">Home</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link eventKey="link-1">About</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link eventKey="link-2">Market</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link href="/userprofile">Blog</Nav.Link>
+            </Nav.Item>
+        </Nav>
+        
         <Container className="profile-container d-flex justify-content-center">
             <Row>
                 <Col>
@@ -119,7 +138,7 @@ const UserProfile = () => {
                             )}
                         </Card.Footer>
                     </Card>
-                    <h2 className="w-100">Your Blog Posts</h2>
+                    <h2 className="w-100 text-white">Your Blog Posts</h2>
                     <div>
                         {posts.map((post, index) => (
                             <Card key={index}>
@@ -134,6 +153,8 @@ const UserProfile = () => {
                 </Col>
             </Row>
         </Container>
+        </>
+        
     );
 }
 
