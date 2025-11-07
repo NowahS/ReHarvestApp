@@ -6,6 +6,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css' /*for icons, make sure to impo
 import App from './App.jsx'
 
 
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />

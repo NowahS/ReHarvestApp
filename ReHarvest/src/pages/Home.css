@@ -1,0 +1,75 @@
+.home-container {
+  margin: 0;
+  padding: 0;
+}
+
+.logo {
+  font-family: "Georgia", serif;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.navbar-custom{
+    width: 100%;
+    background-color:#dcdcdc;
+    border-radius: 0;
+    object-fit: cover;
+}
+
+.search-bar {
+  background-color: #eaeaea;
+  border-radius: 30px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  width: 60%;
+  margin: 2rem auto;
+}
+
+.search-bar input {
+  border: none;
+  background: transparent;
+  flex-grow: 1;
+}
+
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.latest-posts {
+  background-color: #dcdcdc;
+  text-align: center;
+  padding: 1rem;
+  font-weight: bold;
+  border-radius: 10px;
+  margin: 2rem 0 1rem 0;
+}
+
+.post-card {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  margin: 1rem auto;
+  max-width: 600px;
+}
+
+.post-card img {
+  width: 40%;
+  object-fit: cover;
+}
+
+.post-card-content {
+  padding: 1rem;
+}
+
+body, html{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}

@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react"
+import "./Home.css"
 import Nav from "react-bootstrap/Nav"
 import {Form, FormControl, Button, ButtonGroup, Stack} from "react-bootstrap"
 import Post from "./Post"
@@ -49,7 +50,8 @@ function Home(){
 
     return(
         <>
-        <Nav fill variant="tabs" defaultActiveKey= "/home">
+        <div className="home-container">
+        <Nav fill variant="tabs" defaultActiveKey= "/home" className="navbar-custom mb-4">
             <Nav.Item>
                 <Nav.Link href="/home">Home</Nav.Link>
             </Nav.Item>
@@ -65,6 +67,8 @@ function Home(){
         </Nav>
         
         {/*Code for the search bar*/}
+        <div className= "search-bar">
+          <i className="bi bi-list"/>
         <Form className= "d-flex align-items-center mt - 3">
             <FormControl
                 type="text"
@@ -77,9 +81,11 @@ function Home(){
               <i className= "bi bi-search"></i>
             </Button>
         </Form>
+        </div>
 
-        <h2 className="mb-4 fw-bold text-white">Latest Post</h2>
+        
         {/*Filter buttons*/}
+        <div className= "filter-buttons">
         <Button 
         variant="success" 
         size="lg" 
@@ -118,9 +124,10 @@ function Home(){
       >
         Nut Free
       </Button>
+      </div>
 
 
-        <h2>Latest Post</h2>
+        <div className="latest-posts">Latest Post</div>
 
         <Post 
             initialLikes={15}
@@ -134,7 +141,9 @@ function Home(){
               </div>         
             ))}
           </div>
+          </div>
         </>
+
 
     )
 }
