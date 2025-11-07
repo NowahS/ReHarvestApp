@@ -27,9 +27,9 @@ function Home(){
       showPosts();
     }, []);
 
-    const[query, setQuery] = useState(' ')
+    const[searchQuery, setSearchQuery] = useState(' ')
     const handleSearch = () => {
-        console.log('Searching for:', query)
+        console.log('Searching for:', searchQuery)
     }
 
     const handleVegan= () => {
@@ -75,7 +75,7 @@ function Home(){
                 placeholder= "Search"
                 className="mr-sm-2"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
             />
             <Button variant= "link" onClick={handleSearch}>
               <i className= "bi bi-search"></i>
@@ -133,7 +133,7 @@ function Home(){
             initialLikes={15}
             initialComments={[]} 
             />
-          <div>
+          <div style={{ backgroundColor: 'white', color: 'black' }}>
             {posts.map((post) => (
               <div key={post.id} style={{ marginBottom: "10px" }}>
                 <h3>{post.title}</h3>
