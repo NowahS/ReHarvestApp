@@ -26,7 +26,7 @@ TOADD picture of the team
 [Product Backlog](https://docs.google.com/spreadsheets/d/1voAlLn6wZZea9wKupuXWM1POCDhOYgSrEWuqKm0XB5s/edit?gid=8#gid=8)
 
 ## Architecture & Design
-[Architecture & Design]()
+[Architecture & Design](https://www.figma.com/design/2PBKC4g2BvtaWByZg1ZssQ/ReHarvest-App?node-id=8-31&t=CQ23PuereT5G0GXq-1)
 
 ## Process
 
