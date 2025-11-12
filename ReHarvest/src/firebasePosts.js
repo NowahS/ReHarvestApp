@@ -1,7 +1,7 @@
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db, auth } from "./firebase";
 
-export const uploadPost = async (title, content) => {
+export const uploadPost = async (title, content, rating = 0) => {
   const user = auth.currentUser;
 
   if (!user) {
@@ -12,6 +12,7 @@ export const uploadPost = async (title, content) => {
   const postData = {
     userId: user.uid,
     title: title,
+    rating,
     createdAt: serverTimestamp(),
   };
 

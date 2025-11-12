@@ -15,10 +15,10 @@ const UserProfile = () => {
 
     const handleAddPost = async (e) => {
         e.preventDefault();
-        try {
-            await uploadPost(addPost.title, addPost.content);
-            setPosts([...post, addPost]);
-            setAddPost({ title: "", content: "" });
+        try{
+            await uploadPost(addPost.title, addPost.content, 0);
+            setPosts([...posts, addPost]);
+            setAddPost({title: "", content: ""});
             setShowAddPost(false);
         }
         catch (error){
