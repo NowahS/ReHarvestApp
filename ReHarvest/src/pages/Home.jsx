@@ -142,6 +142,7 @@ function Home(){
               id={post.id}
               title={post.title}
               content= {post.content}
+              videoUrl = {post.videoUrl}
               initialLikes = {0}
               initialComments={[]}
               rating={post.rating || 0}/>  

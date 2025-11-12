@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { db } from "../firebase";
 import {doc, updateDoc} from "firebase/firestore";
 
-function Post({ id, title, content, initialLikes, initialComments, rating = 0 }) {
+function Post({ id, title, content, initialLikes, initialComments, rating = 0, videoUrl}) {
   const [currentRating, setCurrentRating] = useState(rating);
   const[likes, setLikes] = useState(initialLikes || 0);
   const[comments, setComments] = useState(initialComments || []);
@@ -23,6 +23,29 @@ function Post({ id, title, content, initialLikes, initialComments, rating = 0 })
     <div className="post-container mt-4 p-3 border rounded bg-light">
       <h4>{title}</h4>
       <p>{content}</p>
+
+      {/*Video Embed code */}
+      {videoUrl && (
+        <div className="video-container my-3">
+          {videoUrl.includes("youtube") || videoUrl.includes("vimeo") ? (
+            <iframe
+            width= "560"
+            height="315"
+            src={videoUrl}
+            title="Video post"
+            frameBorder="0"
+            allow= "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen>
+            </iframe>
+          ) : (
+            <video width= "500" height= "315" controls>
+              <source src={videoUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          )}
+        </div>
+      )}
+      
       <Button variant="primary" onClick={handleLike}>
         ❤️ Like ({likes})
       </Button>
