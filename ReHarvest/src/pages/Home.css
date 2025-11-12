@@ -4,17 +4,36 @@
 }
 
 .logo {
-  font-family: "Georgia", serif;
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: white;
+  height: 500px;
+  width: auto;
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+  position: absolute;
+  top: -170px;
+  left: -90px;
 }
 
 .navbar-custom{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
     background-color:#dcdcdc;
     border-radius: 0;
-    object-fit: cover;
+    padding: 0.5rem 1rem;
+    position: relative;
+}
+
+.nav-left{
+  display: flex;
+  align-items: center;
+}
+
+.nav-links{
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
 }
 
 .search-bar {
