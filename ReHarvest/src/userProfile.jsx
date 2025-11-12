@@ -6,19 +6,22 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ProfilePicture from "./assets/profileIcon.png";
 import Nav from "react-bootstrap/Nav";
+import Card from "react-bootstrap/Card";
 
 const UserProfile = () => {
     const [query, setQuery] = useState('');
     const [showAddPost, setShowAddPost] = useState(false);
     const [addPost, setAddPost] = useState({ title: "", content: "" });
     const [posts, setPosts] = useState([]);
+    const [file, setFile] = useState(null);
 
     const handleAddPost = async (e) => {
         e.preventDefault();
-        try{
-            await uploadPost(addPost.title, addPost.content, 0);
+        try {
+            await uploadPost(addPost.title, addPost.content, file);
             setPosts([...posts, addPost]);
-            setAddPost({title: "", content: ""});
+            setAddPost({ title: "", content: "" });
+            setFile(null);
             setShowAddPost(false);
         }
         catch (error){
@@ -122,8 +125,14 @@ const UserProfile = () => {
 
                 {showAddPost && (
                     <Form onSubmit = {handleAddPost}>
-                        <Form.Control type="text" placeholder = "Title" value = {addPost.title} onChange = {(e) => setAddPost({...addPost, title: e.target.value})}/>
+                        <Form.Control type="text" placeholder = "Title" value = {addPost.title} onChange = {(e) => setAddPost({...addPost, title: e.target.value})} required/>
+
                         <Form.Control as="textarea" placeholder = "Content" value = {addPost.content} onChange = {(e) => setAddPost({...addPost, content: e.target.value})}/>
+
+                        <Form.Group>
+                            <Form.Label>Add a Photo</Form.Label>
+                            <Form.Control type = "file" onChange = {(e) => setFile(e.target.files[0])} accept="image/*"/>
+                        </Form.Group>
                         <Button type="submit">Submit</Button>
                     </Form>
                 )}
@@ -137,7 +146,11 @@ const UserProfile = () => {
                                 <Card.Body>
                                     <Card.Title>{post.title}</Card.Title>
                                     <Card.Text>{post.content}</Card.Text>
-                                    <Card.Text>{post.createdAt}</Card.Text>
+                                    {post.file && (
+                                        <Card.Text>
+                                            {post.createdAt}
+                                            File attached: {post.file.name}
+                                        </Card.Text>)}
                                 </Card.Body>
                             </Card>
                 ))}

@@ -1,7 +1,7 @@
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db, auth } from "./firebase";
+import { db, auth, storage, ref, uploadBytes, getDownloadURL } from "./firebase";
 
-export const uploadPost = async (title, content, rating = 0) => {
+export const uploadPost = async (title, content = "", rating = 0, file = null) => {
   const user = auth.currentUser;
 
   if (!user) {
@@ -18,6 +18,14 @@ export const uploadPost = async (title, content, rating = 0) => {
 
   if (content){
     postData.content = content;
+  }
+
+  if (file){
+    const fileRef = ref(storage, 'posts/${user.uid}/${file.name}_${serverTimestamp()}');
+    const snapshot = await uploadBytes(fileRef, file);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    postData.fileUrl = downloadURL;
+    postData.fileName = file.name;
   }
 
   try {
