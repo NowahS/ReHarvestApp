@@ -1,7 +1,7 @@
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db, auth, storage, ref, uploadBytes, getDownloadURL } from "./firebase";
 
-export const uploadPost = async (title, content = "", rating = 0, file = null) => {
+export const uploadPost = async (title, content = "", rating = 0, videoUrl = "", file = null) => {
   const user = auth.currentUser;
 
   if (!user) {
@@ -26,6 +26,9 @@ export const uploadPost = async (title, content = "", rating = 0, file = null) =
     const downloadURL = await getDownloadURL(snapshot.ref);
     postData.fileUrl = downloadURL;
     postData.fileName = file.name;
+  }
+  if (videoUrl){
+    postData.videoUrl = videoUrl;
   }
 
   try {
