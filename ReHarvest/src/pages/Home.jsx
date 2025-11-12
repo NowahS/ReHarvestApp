@@ -135,17 +135,16 @@ function Home(){
 
 
         <div className="latest-posts">Latest Post</div>
-
-        <Post 
-            initialLikes={15}
-            initialComments={[]} 
-            />
           <div style={{ backgroundColor: 'white', color: 'black' }}>
             {posts.map((post) => (
-              <div key={post.id} style={{ marginBottom: "10px" }}>
-                <h3>{post.title}</h3>
-                <p>{post.content}</p>  
-              </div>         
+              <Post
+              key = {post.id}
+              id={post.id}
+              title={post.title}
+              content= {post.content}
+              initialLikes = {0}
+              initialComments={[]}
+              rating={post.rating || 0}/>  
             ))}
           </div>
           </div>
