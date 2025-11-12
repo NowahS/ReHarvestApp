@@ -6,6 +6,7 @@ import Post from "./Post"
 import {db} from "../firebase"
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
+
 function Home(){
     const [posts, setPosts] = useState([]);
     const showPosts = async () => {
@@ -27,7 +28,7 @@ function Home(){
       showPosts();
     }, []);
 
-    const[searchQuery, setSearchQuery] = useState(' ')
+    const[searchQuery, setSearchQuery] = useState('')
     const handleSearch = () => {
         console.log('Searching for:', searchQuery)
     }
@@ -51,7 +52,12 @@ function Home(){
     return(
         <>
         <div className="home-container">
-        <Nav fill variant="tabs" defaultActiveKey= "/home" className="navbar-custom mb-4">
+          <header className= "nav-custom">
+            <div className= "nav-left">
+              <img src= "/Logo.png" alt="ReHarvest Logo" className= "logo"/>
+            </div>
+            <Nav fill variant="tabs" defaultActiveKey= "/home" className="navbar-custom mb-4">
+         
             <Nav.Item>
                 <Nav.Link href="/home">Home</Nav.Link>
             </Nav.Item>
@@ -64,7 +70,8 @@ function Home(){
             <Nav.Item>
                 <Nav.Link href="/userprofile">Blog</Nav.Link>
             </Nav.Item>
-        </Nav>
+            </Nav>
+          </header>
         
         {/*Code for the search bar*/}
         <div className= "search-bar">
@@ -74,7 +81,7 @@ function Home(){
                 type="text"
                 placeholder= "Search"
                 className="mr-sm-2"
-                value={query}
+                value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
             />
             <Button variant= "link" onClick={handleSearch}>
