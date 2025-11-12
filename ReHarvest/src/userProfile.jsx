@@ -6,19 +6,21 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ProfilePicture from "./assets/profileIcon.png";
 import Nav from "react-bootstrap/Nav";
+import Post from "./pages/Post";
+import Card from 'react-bootstrap/Card'
 
 const UserProfile = () => {
     const [query, setQuery] = useState('');
     const [showAddPost, setShowAddPost] = useState(false);
-    const [addPost, setAddPost] = useState({ title: "", content: "" });
+    const [addPost, setAddPost] = useState({ title: "", content: "", videoUrl: "" });
     const [posts, setPosts] = useState([]);
 
     const handleAddPost = async (e) => {
         e.preventDefault();
         try{
-            await uploadPost(addPost.title, addPost.content, 0);
+            await uploadPost(addPost.title, addPost.content, addPost.videoUrl, 0);
             setPosts([...posts, addPost]);
-            setAddPost({title: "", content: ""});
+            setAddPost({title: "", content: "", videoUrl: ""});
             setShowAddPost(false);
         }
         catch (error){
@@ -125,6 +127,8 @@ const UserProfile = () => {
                         <Form.Control type="text" placeholder = "Title" value = {addPost.title} onChange = {(e) => setAddPost({...addPost, title: e.target.value})}/>
                         <Form.Control as="textarea" placeholder = "Content" value = {addPost.content} onChange = {(e) => setAddPost({...addPost, content: e.target.value})}/>
                         <Button type="submit">Submit</Button>
+
+                        <Form.Control type="text" placeholder= "Video URL (optional YouTube/Vimeo or mp4 link)" value= {addPost.videoUrl} onChange={(e) => setAddPost({...addPost, videoUrl: e.target.value })} className= "mb-2"/>
                     </Form>
                 )}
             </div>
@@ -133,13 +137,22 @@ const UserProfile = () => {
 
            <div>
                 {posts.map((post, index) => (
-                            <Card key={index}>
+                    <Post
+                    key={index}
+                    id={post.id}
+                    title={post.title}
+                    content={post.content}
+                    videoUrl={post.videoUrl}
+                    initialLikes={0}
+                    initialComments={[]}
+                    rating={post.rating || 0}/>
+                           /* <Card key={index}>
                                 <Card.Body>
                                     <Card.Title>{post.title}</Card.Title>
                                     <Card.Text>{post.content}</Card.Text>
                                     <Card.Text>{post.createdAt}</Card.Text>
                                 </Card.Body>
-                            </Card>
+                            </Card>*/
                 ))}
             </div> 
         </>
