@@ -1,4 +1,4 @@
-import { collection, addDoc, serverTimestamp} from "firebase/firestore";
+import { collection, addDoc, getDoc, serverTimestamp} from "firebase/firestore";
 import { db, auth, storage, ref, uploadBytes, getDownloadURL } from "./firebase";
 
 export const uploadPost = async (title, content = "", videoUrl = "", rating = 0, file = null) => {
@@ -32,8 +32,10 @@ export const uploadPost = async (title, content = "", videoUrl = "", rating = 0,
   }
 
   try {
-    await addDoc(collection(db, "posts"), postData);
+    const docRef =await addDoc(collection(db, "posts"), postData);
+    const docSnap = await getDoc(docRef);
     alert("Post created successfully");
+    return {id: docRef.id, ...docSnap.data()};
   } 
   catch (error) {
     console.error("Error making post:", error);

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { db, auth } from "./firebase";
+import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { uploadPost } from "./firebasePosts";
 import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
@@ -11,7 +13,7 @@ import Card from 'react-bootstrap/Card'
 import { FormLabel } from 'react-bootstrap';
 
 const UserProfile = () => {
-    const [query, setQuery] = useState('');
+    //const [query, setQuery] = useState('');
     const [showAddPost, setShowAddPost] = useState(false);
     const [addPost, setAddPost] = useState({ title: "", content: "", videoUrl: "" });
     const [posts, setPosts] = useState([]);
@@ -20,11 +22,23 @@ const UserProfile = () => {
     const [profileImage, setProfileImage] = useState(ProfilePicture);
     const [newProfileFile, setNewProfileFile] = useState(null);
 
+    useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+        if (user) {
+        const userPosts = await showUserPosts(user.uid);
+        setPosts(userPosts);
+        }
+    });
+
+    return () => unsubscribe(); 
+    }, []);
+
+
     const handleAddPost = async (e) => {
         e.preventDefault();
         try {
-            await uploadPost(addPost.title, addPost.content, addPost.videoUrl, 0, file);
-            setPosts([...posts, addPost]);
+            const newPost = await uploadPost(addPost.title, addPost.content, addPost.videoUrl, 0, file);
+            setPosts(prevPosts => [newPost, ...prevPosts]);
             setAddPost({ title: "", content: "", videoUrl: ""});
             setFile(null);
             setShowAddPost(false);
@@ -33,6 +47,35 @@ const UserProfile = () => {
             console.log(error);
         } 
     };
+
+    const showUserPosts = async (uid) => {
+        if (!uid) {
+            return;
+        }
+        try {
+        const postsCollection = collection(db, "posts");
+        const q = query(
+            postsCollection,
+            where("userId", "==", uid)
+        );
+
+        const querySnapshot = await getDocs(q);
+        const postsData = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+
+        return postsData;
+        } 
+        catch (error) {
+        console.log("Error fetching user posts:", error);
+        return [];
+        }
+    };   
+
+    useEffect(() => {
+    showUserPosts();
+  }, []);  
 
     const [profileData, setProfileData] = useState({
         username: 'Username',
@@ -174,9 +217,9 @@ const UserProfile = () => {
             <h2 className="w-100 text-white mt-4">Your Blog Posts</h2>
 
            <div>
-                {posts.map((post, index) => (
+                {posts.map(post => (
                     <Post
-                    key={index}
+                    key={post.id}
                     id={post.id}
                     title={post.title}
                     content={post.content}
