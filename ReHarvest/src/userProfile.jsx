@@ -6,31 +6,37 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ProfilePicture from "./assets/profileIcon.png";
 import Nav from "react-bootstrap/Nav";
+import Card from 'react-bootstrap/Card';
+import { FormLabel } from 'react-bootstrap';
 
 const UserProfile = () => {
     const [query, setQuery] = useState('');
     const [showAddPost, setShowAddPost] = useState(false);
-    const [addPost, setAddPost] = useState({ title: "", content: "" });
+    const [addPost, setAddPost] = useState({ title: "", content: ""});
     const [posts, setPosts] = useState([]);
+
+    const [profileImage, setProfileImage] = useState(ProfilePicture);
+    const [newProfileFile, setNewProfileFile] = useState(null);
 
     const handleAddPost = async (e) => {
         e.preventDefault();
         try {
             await uploadPost(addPost.title, addPost.content);
-            setPosts([...post, addPost]);
+            setPosts([...posts, addPost]);
             setAddPost({ title: "", content: "" });
             setShowAddPost(false);
         }
         catch (error){
-            console.log(error)
+            console.log(error);
         } 
-    }
+    };
+
     const [profileData, setProfileData] = useState({
         username: 'Username',
         bio: '',
         socials: '',
     });
-    
+
     const [isEditing, setIsEditing] = useState(false);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -40,12 +46,24 @@ const UserProfile = () => {
         }));
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file){
+            setNewProfileFile(file);
+            const imageURL = URL.createObjectURL(file);
+            setProfileImage(imageURL);
+        }
+    };
+
     const handleEditSave = () => {
         if (isEditing) {
             console.log('Profile Saved:', profileData);
+            if (newProfileFile) {
+                console.log('New file detected for upload:', newProfileFile.name);
+            }
         }
         setIsEditing(!isEditing);
-    };
+    }; 
 
     return (
         <>
@@ -67,12 +85,24 @@ const UserProfile = () => {
 
             <div className="post-container mt-4 p-3 border rounded bg-light">
                 <Image
-                    src={ProfilePicture}
+                    //src={ProfilePicture}
+                    src={profileImage}
                     alt="Profile Picture"
                     roundedCircle
                     className="profile-image"
                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}
                 />
+
+                {isEditing && (
+                    <Form.Group controlId="formFile" className="mb-3" >
+                        <FormLabel className="text-muted">Change Profile Picture</FormLabel>
+                        <Form.Control 
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                        />
+                    </Form.Group>
+                )}
 
                 <h2 className="profile-username">@{profileData.username}</h2>
 
@@ -121,12 +151,13 @@ const UserProfile = () => {
                 <Button onClick={() => setShowAddPost(!showAddPost)}>+ Add Post</Button>
 
                 {showAddPost && (
-                    <Form onSubmit = {handleAddPost}>
-                        <Form.Control type="text" placeholder = "Title" value = {addPost.title} onChange = {(e) => setAddPost({...addPost, title: e.target.value})}/>
-                        <Form.Control as="textarea" placeholder = "Content" value = {addPost.content} onChange = {(e) => setAddPost({...addPost, content: e.target.value})}/>
-                        <Button type="submit">Submit</Button>
+                    <Form onSubmit={handleAddPost}>
+                        <Form.Control type="text" placeholder="Title" className="mb-2" value={addPost.title} onChange={(e) => setAddPost({ ...addPost, title: e.target.value })} required/>
+                        <Form.Control as="textarea" placeholder="Content" className="mb-2" value={addPost.content} onChange={(e) => setAddPost({ ...addPost, content: e.target.value })}/>
+                        <Button type="submit" variant="success">Submit</Button>
                     </Form>
-                )}
+            )}
+
             </div>
 
             <h2 className="w-100 text-white mt-4">Your Blog Posts</h2>

@@ -8,6 +8,7 @@ import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
 function Home(){
     const [posts, setPosts] = useState([]);
+
     const showPosts = async () => {
       try{
         const postsCollection = collection(db, "posts");
@@ -87,39 +88,39 @@ function Home(){
         {/*Filter buttons*/}
         <div className= "filter-buttons">
         <Button 
-        variant="success" 
-        size="lg" 
-        onClick={handleVegan} 
+        variant="success"
+        size="lg"  
+        onClick={handleVegan}
       >
         VEGAN
       </Button>
-      <Button 
-        variant="warning" 
-        size="lg" 
-        onClick={handleKeto} 
+      <Button  
+        variant="warning"
+        size="lg"  
+        onClick={handleVegan} 
       >
         Keto
       </Button>
 
       <Button 
-        variant="danger" 
-        size="lg" 
+        variant="danger"
+        size="lg"  
         onClick={handleGlutenFree} 
       >
         Gluten Free
       </Button>
 
       <Button 
-        variant="info" 
-        size="lg" 
+        variant="info"
+        size="lg"  
         onClick={handleLactose} 
       >
         Lactose
       </Button>
 
       <Button 
-        variant="secondary" 
-        size="lg" 
+        variant="secondary"
+        size="lg"  
         onClick={handleNutFree} 
       >
         Nut Free
@@ -145,6 +146,6 @@ function Home(){
         </>
 
 
-    )
+    );
 }
 export default Home
