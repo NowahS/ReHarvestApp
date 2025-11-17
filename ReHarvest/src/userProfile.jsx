@@ -16,6 +16,9 @@ const UserProfile = () => {
     const [posts, setPosts] = useState([]);
     const [file, setFile] = useState(null);
 
+    const [profileImage, setProfileImage] = useState(ProfilePicture);
+    const [newProfileFile, setNewProfileFile] = useState(null);
+
     const handleAddPost = async (e) => {
         e.preventDefault();
         try {
@@ -26,15 +29,16 @@ const UserProfile = () => {
             setShowAddPost(false);
         }
         catch (error){
-            console.log(error)
+            console.log(error);
         } 
-    }
+    };
+
     const [profileData, setProfileData] = useState({
         username: 'Username',
         bio: '',
         socials: '',
     });
-    
+
     const [isEditing, setIsEditing] = useState(false);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -44,12 +48,24 @@ const UserProfile = () => {
         }));
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file){
+            setNewProfileFile(file);
+            const imageURL = URL.createObjectURL(file);
+            setProfileImage(imageURL);
+        }
+    };
+
     const handleEditSave = () => {
         if (isEditing) {
             console.log('Profile Saved:', profileData);
+            if (newProfileFile) {
+                console.log('New file detected for upload:', newProfileFile.name);
+            }
         }
         setIsEditing(!isEditing);
-    };
+    }; 
 
     return (
         <>
@@ -71,12 +87,24 @@ const UserProfile = () => {
 
             <div className="post-container mt-4 p-3 border rounded bg-light">
                 <Image
-                    src={ProfilePicture}
+                    //src={ProfilePicture}
+                    src={profileImage}
                     alt="Profile Picture"
                     roundedCircle
                     className="profile-image"
                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}
                 />
+
+                {isEditing && (
+                    <Form.Group controlId="formFile" className="mb-3" >
+                        <FormLabel className="text-muted">Change Profile Picture</FormLabel>
+                        <Form.Control 
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                        />
+                    </Form.Group>
+                )}
 
                 <h2 className="profile-username">@{profileData.username}</h2>
 
@@ -138,7 +166,8 @@ const UserProfile = () => {
 
                         <Form.Control type="text" placeholder= "Video URL (optional YouTube/Vimeo or mp4 link)" value= {addPost.videoUrl} onChange={(e) => setAddPost({...addPost, videoUrl: e.target.value })} className= "mb-2"/>
                     </Form>
-                )}
+            )}
+
             </div>
 
             <h2 className="w-100 text-white mt-4">Your Blog Posts</h2>
