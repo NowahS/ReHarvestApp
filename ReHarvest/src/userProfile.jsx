@@ -150,6 +150,7 @@ const UserProfile = () => {
                     id={post.id}
                     title={post.title}
                     content={post.content}
+                    fileUrl={post.fileUrl}
                     videoUrl={post.videoUrl}
                     initialLikes={0}
                     initialComments={[]}
