@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { db, auth } from "./firebase";
+import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { uploadPost } from "./firebasePosts";
 import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
@@ -11,26 +13,37 @@ import Card from 'react-bootstrap/Card'
 import { FormLabel } from 'react-bootstrap';
 
 const UserProfile = () => {
-    const [query, setQuery] = useState('');
+    //const [query, setQuery] = useState('');
     const [showAddPost, setShowAddPost] = useState(false);
     const [addPost, setAddPost] = useState({ title: "", content: "", category: "", videoUrl: "" });
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const[diet, setDiet] = useState("");
+
+    
     const [file, setFile] = useState(null);
 
     const [profileImage, setProfileImage] = useState(ProfilePicture);
     const [newProfileFile, setNewProfileFile] = useState(null);
 
+    useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+        if (user) {
+        const userPosts = await showUserPosts(user.uid);
+        setPosts(userPosts);
+        }
+    });
+
+    return () => unsubscribe(); 
+    }, []);
+
+
     const handleAddPost = async (e) => {
         e.preventDefault();
-
-        if (!addPost.category) {
-            alert("Please choose a category before posting.");
-            return;
-        }
         try {
-            const newPost = await uploadPost(addPost.title, addPost.content, addPost.category, addPost.videoUrl, 0, file, diet);
+            const newPost = await uploadPost(addPost.title, addPost.content, addPost.videoUrl, 0, file, diet);
             setPosts(prevPosts => [newPost, ...prevPosts]);
-            setAddPost({ title: "", content: "", category: "", videoUrl: ""});
+            setAddPost({ title: "", content: "", videoUrl: ""});
             setDiet("");
             setFile(null);
             setShowAddPost(false);
@@ -39,6 +52,35 @@ const UserProfile = () => {
             console.log(error);
         } 
     };
+
+    const showUserPosts = async (uid) => {
+        if (!uid) {
+            return;
+        }
+        try {
+        const postsCollection = collection(db, "posts");
+        const q = query(
+            postsCollection,
+            where("userId", "==", uid)
+        );
+
+        const querySnapshot = await getDocs(q);
+        const postsData = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+
+        return postsData;
+        } 
+        catch (error) {
+        console.log("Error fetching user posts:", error);
+        return [];
+        }
+    };   
+
+    useEffect(() => {
+    showUserPosts();
+  }, []);  
 
     const [profileData, setProfileData] = useState({
         username: 'Username',
@@ -165,46 +207,25 @@ const UserProfile = () => {
 
                         <Form.Control as="textarea" placeholder = "Content" value = {addPost.content} onChange = {(e) => setAddPost({...addPost, content: e.target.value})}/>
                         
-                        <Form.Control placeholder= "Category" value={addPost.category} onChange={(e) => setAddPost({ ...addPost, category: e.target.value })}/>
-
-                            <Button
-                                variant={addPost.category === "Vegan" ? "success" : "outline-success"}
-                                onClick={() => setAddPost({ ...addPost, category: "Vegan" })}
-                            >
-                                Vegan
-                            </Button>
-                            <Button
-                                variant={addPost.category === "Keto" ? "warning" : "outline-warning"}
-                                onClick={() => setAddPost({ ...addPost, category: "Keto" })}
-                            >
-                                Keto
-                            </Button>
-                            <Button
-                                variant={addPost.category === "Gluten Free" ? "danger" : "outline-danger"}
-                                onClick={() => setAddPost({ ...addPost, category: "Gluten Free" })}
-                            >
-                                Gluten Free
-                            </Button>
-                            <Button
-                                variant={addPost.category === "Lactose" ? "info" : "outline-info"}
-                                onClick={() => setAddPost({ ...addPost, category: "Lactose" })}
-                            >
-                                Lactose
-                            </Button>
-                            <Button
-                                variant={addPost.category === "Nut Free" ? "secondary" : "outline-secondary"}
-                                onClick={() => setAddPost({ ...addPost, category: "Nut Free" })}
-                            >
-                                Nut Free
-                            </Button>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Diet Category</Form.Label>
+                            <Form.Select value={diet} onChange={(e) => setDiet(e.target.value)}>
+                                <option value= "">Select category...</option>
+                                <option value= "vegan">Vegan</option>
+                                <option value= "keto">Keto</option>
+                                <option value= "gluten free">Gluten Free</option>
+                                <option value= "lactose">Lactose</option>
+                                <option value= "nut free">Nut Free</option>
+                            </Form.Select>
+                        </Form.Group>
 
                         <Form.Group>
                             <Form.Label>Add a Photo</Form.Label>
                             <Form.Control type = "file" onChange = {(e) => setFile(e.target.files[0])} accept="image/*"/>
                         </Form.Group>
-                        <Button type="submit">Submit</Button>
 
                         <Form.Control type="text" placeholder= "Video URL (optional YouTube/Vimeo or mp4 link)" value= {addPost.videoUrl} onChange={(e) => setAddPost({...addPost, videoUrl: e.target.value })} className= "mb-2"/>
+                        <Button type="submit">Submit</Button>
                     </Form>
             )}
 
@@ -213,13 +234,12 @@ const UserProfile = () => {
             <h2 className="w-100 text-white mt-4">Your Blog Posts</h2>
 
            <div>
-                {posts.map((post, index) => (
+                {posts.map(post => (
                     <Post
-                    key={index}
+                    key={post.id}
                     id={post.id}
                     title={post.title}
                     content={post.content}
-                    category={post.category}
                     fileUrl={post.fileUrl}
                     videoUrl={post.videoUrl}
                     initialLikes={0}
