@@ -1,7 +1,7 @@
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db, auth } from "./firebase";
+import { collection, addDoc, getDoc, serverTimestamp} from "firebase/firestore";
+import { db, auth, storage, ref, uploadBytes, getDownloadURL } from "./firebase";
 
-export const uploadPost = async (title, content, videoUrl = "", rating = 0, ) => {
+export const uploadPost = async (title, content = "", videoUrl = "", rating = 0, file = null, diet = "") => {
   const user = auth.currentUser;
 
   if (!user) {
@@ -13,6 +13,7 @@ export const uploadPost = async (title, content, videoUrl = "", rating = 0, ) =>
     userId: user.uid,
     title: title,
     rating,
+    diet,
     createdAt: serverTimestamp(),
   };
 
@@ -20,13 +21,22 @@ export const uploadPost = async (title, content, videoUrl = "", rating = 0, ) =>
     postData.content = content;
   }
 
+  if (file){
+    const fileRef = ref(storage, `posts/${user.uid}/${file.name}_${Date.now()}`);
+    const snapshot = await uploadBytes(fileRef, file);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    postData.fileUrl = downloadURL;
+    postData.fileName = file.name;
+  }
   if (videoUrl){
     postData.videoUrl = videoUrl;
   }
 
   try {
-    await addDoc(collection(db, "posts"), postData);
+    const docRef =await addDoc(collection(db, "posts"), postData);
+    const docSnap = await getDoc(docRef);
     alert("Post created successfully");
+    return {id: docRef.id, ...docSnap.data()};
   } 
   catch (error) {
     console.error("Error making post:", error);

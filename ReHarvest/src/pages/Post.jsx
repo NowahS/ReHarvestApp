@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { db } from "../firebase";
 import {doc, updateDoc} from "firebase/firestore";
 
-function Post({ id, title, content, initialLikes, initialComments, rating = 0, videoUrl}) {
+function Post({ id, title, content, initialLikes, initialComments, fileUrl, rating = 0, videoUrl}) {
   const [currentRating, setCurrentRating] = useState(rating);
   const[likes, setLikes] = useState(initialLikes || 0);
   const[comments, setComments] = useState(initialComments || []);
@@ -49,6 +49,17 @@ function Post({ id, title, content, initialLikes, initialComments, rating = 0, v
     <div className="post-container mt-4 p-3 border rounded bg-light">
       <h4>{title}</h4>
       <p>{content}</p>
+
+      {/* Image Display */}
+      {fileUrl && (
+        <div className="my-3">
+          <img 
+            src={fileUrl} 
+            alt="Post attachment"
+            style={{ maxWidth: "250px", width: "100%", height: "auto"}}
+          />
+        </div>
+      )}
 
       {/*Video Embed code */}
       {videoUrl && (

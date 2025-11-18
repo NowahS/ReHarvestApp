@@ -9,6 +9,10 @@ import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
 function Home(){
     const [posts, setPosts] = useState([]);
+
+    const[activeFilter, setActiveFilter] = useState(null);
+
+
     const showPosts = async () => {
       try{
         const postsCollection = collection(db, "posts");
@@ -33,12 +37,8 @@ function Home(){
         console.log('Searching for:', searchQuery)
     }
 
-    const handleVegan= () => {
-        console.log('Vegan filter')
-    }
-    const handleKeto= () => {
-        console.log('Keto filter')
-    }
+    const handleVegan= () => setActiveFilter("vegan");
+    const handleKeto= () => setActiveFilter("keto");
     const handleGlutenFree= () => {
         console.log('Gluten Free filter')
     }
@@ -48,6 +48,8 @@ function Home(){
     const handleNutFree= () => {
         console.log('Nut Free filter')
     }
+
+    const filteredPosts = activeFilter ? posts.filter((post) => post?.diet?.toLowerCase()=== activeFilter) : posts;
 
     return(
         <>
@@ -94,39 +96,39 @@ function Home(){
         {/*Filter buttons*/}
         <div className= "filter-buttons">
         <Button 
-        variant="success" 
-        size="lg" 
-        onClick={handleVegan} 
+        variant="success"
+        size="lg"  
+        onClick={handleVegan}
       >
         VEGAN
       </Button>
-      <Button 
-        variant="warning" 
-        size="lg" 
+      <Button  
+        variant="warning"
+        size="lg"  
         onClick={handleKeto} 
       >
         Keto
       </Button>
 
       <Button 
-        variant="danger" 
-        size="lg" 
+        variant="danger"
+        size="lg"  
         onClick={handleGlutenFree} 
       >
         Gluten Free
       </Button>
 
       <Button 
-        variant="info" 
-        size="lg" 
+        variant="info"
+        size="lg"  
         onClick={handleLactose} 
       >
         Lactose
       </Button>
 
       <Button 
-        variant="secondary" 
-        size="lg" 
+        variant="secondary"
+        size="lg"  
         onClick={handleNutFree} 
       >
         Nut Free
@@ -136,12 +138,13 @@ function Home(){
 
         <div className="latest-posts">Latest Post</div>
           <div style={{ backgroundColor: 'white', color: 'black' }}>
-            {posts.map((post) => (
+            {filteredPosts.map((post) => (
               <Post
               key = {post.id}
               id={post.id}
               title={post.title}
               content= {post.content}
+              fileUrl = {post.fileUrl}
               videoUrl = {post.videoUrl}
               initialLikes = {0}
               initialComments={[]}
@@ -152,6 +155,6 @@ function Home(){
         </>
 
 
-    )
+    );
 }
 export default Home
