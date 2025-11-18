@@ -220,10 +220,7 @@ const UserProfile = () => {
                     title={post.title}
                     content={post.content}
                     category={post.category}
-<<<<<<< HEAD
-=======
                     fileUrl={post.fileUrl}
->>>>>>> fd8cf21 (updated file)
                     videoUrl={post.videoUrl}
                     initialLikes={0}
                     initialComments={[]}
