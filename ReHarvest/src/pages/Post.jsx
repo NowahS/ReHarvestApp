@@ -21,7 +21,19 @@ function Post({ id, title, content, initialLikes, initialComments, fileUrl, rati
 
   /*helper function*/
   function convertToEmbedUrl(url) {
-  // YouTube full URL
+    const youtubeRegex1 = /youtube\.com\/watch\?v=([^&] +)/;
+    const youtubeRegex2 = /youtu\.be\/([^?]+)/;
+
+    let match = url.match(youtubeRegex1);
+    if(match) {
+      return `https://www.youtube.com/embed/${match[1]}`;
+    }
+
+    match = url.match(youtubeRegex2);
+    if(match){
+      return `https://www.youtube.com/embed/${match[1]}`;
+    }
+  /* YouTube full URL
   if (url.includes("youtube.com/watch")) {
     const videoId = url.split("v=")[1].split("&")[0]; // strip extra params
     return `https://www.youtube.com/embed/${videoId}`;
@@ -37,7 +49,7 @@ function Post({ id, title, content, initialLikes, initialComments, fileUrl, rati
   if (url.includes("vimeo.com/")) {
     const videoId = url.split("/").pop().split("?")[0];
     return `https://player.vimeo.com/video/${videoId}`;
-  }
+  }*/
 
   // Otherwise, assume direct mp4
   return url;
@@ -64,13 +76,12 @@ function Post({ id, title, content, initialLikes, initialComments, fileUrl, rati
       {/*Video Embed code */}
       {videoUrl && (
         <div className="video-container my-3">
-          {videoUrl.includes("youtube") || videoUrl.includes("vimeo") ? (
+          {videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")|| videoUrl.includes("vimeo") ? (
             <div className="ratio ratio-16x9">
             <iframe
-            /*src={convertToEmbedUrl (videoUrl)}*/
-             src="https://www.youtube.com/embed/RaLzxZryEoA?si=ncMu-q3RqTbCojc0"
+            src={convertToEmbedUrl (videoUrl)}
             title="Video post"
-            allow= "accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow= "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             style={{border: 0}}>
             </iframe>
