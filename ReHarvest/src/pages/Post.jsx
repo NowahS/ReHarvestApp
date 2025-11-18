@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import { db } from "../firebase";
-import {doc, updateDoc} from "firebase/firestore";
+import { db, auth } from "../firebase";
+import {doc, updateDoc, arrayUnion} from "firebase/firestore";
 
 function Post({ id, title, content, initialLikes, initialComments, fileUrl, rating = 0, videoUrl}) {
   const [currentRating, setCurrentRating] = useState(rating);
   const[likes, setLikes] = useState(initialLikes || 0);
   const[comments, setComments] = useState(initialComments || []);
+  const [newCommentText, setNewCommentText] = useState("");
 
   const handleLike = () => setLikes(likes + 1);
   const handleRating = async (newRating) => {
@@ -18,6 +19,32 @@ function Post({ id, title, content, initialLikes, initialComments, fileUrl, rati
       console.error("Error upadting rating:", error);
     }
   };
+
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    const user = auth.currentUser;
+    if(!user) {
+      alert("You must be logged in to comment.");
+      return;
+    }
+    if (newCommentText.trim() === "") return;
+    const commentData = {
+      text: newCommentText.trim(),
+      userId: user.uid,
+    }
+    try{
+      const postRef = doc(db, "posts", id);
+      await updateDoc(postRef, {
+        comments: arrayUnion(commentData),
+      })
+      setComments([...comments, commentData]);
+      setNewCommentText("");
+    } 
+    catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  }
+
 
   /*helper function*/
   function convertToEmbedUrl(url) {
@@ -103,8 +130,28 @@ function Post({ id, title, content, initialLikes, initialComments, fileUrl, rati
         {comments.length === 0 ? (
           <p>No comments yet</p>
         ) : (
-          comments.map((c, i) => <p key={i}>• {c}</p>)
+          comments.map((c, i) => (
+          //<p key={i}>• {c}</p>)
+          <p key={i}>
+            • User ({c.userId.substring(0, 4)}...): {c.text}
+          </p>
+          ))
         )}
+      </div>
+
+      <div className="mt-3">
+        <h6>Add Comment</h6>
+        <form onSubmit={handleAddComment}>
+          <input
+          type="text"
+          value={newCommentText}
+          onChange={(e) => setNewCommentText(e.target.value)}
+          placeholder="Write your comment..."
+          />
+          <Button variant="success" type="submit" size="sm">
+            Post Comment
+          </Button>
+        </form>
       </div>
     </div>
   );
