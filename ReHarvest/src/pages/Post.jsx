@@ -9,7 +9,17 @@ function Post({ id, title, content, initialLikes, initialComments, fileUrl, rati
   const[comments, setComments] = useState(initialComments || []);
   const [newCommentText, setNewCommentText] = useState("");
 
-  const handleLike = () => setLikes(likes + 1);
+  //const handleLike = () => setLikes(likes + 1);
+  const handleLike = async () => {
+    try{
+      const postRef = doc(db, "posts", id);
+      await updateDoc(postRef, {likes: likes + 1});
+      setLikes(likes + 1);
+    }catch (error){
+        console.error("Error updating likes:", error)
+    }
+  };
+
   const handleRating = async (newRating) => {
     setCurrentRating(newRating);
     try{

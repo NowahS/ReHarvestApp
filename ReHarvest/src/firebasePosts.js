@@ -15,6 +15,7 @@ export const uploadPost = async (title, content = "", videoUrl = "", rating = 0,
     rating,
     diet,
     comments: [],
+    likes: 0,
     createdAt: serverTimestamp(),
   };
 
