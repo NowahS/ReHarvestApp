@@ -213,6 +213,9 @@ const UserProfile = () => {
                                 <option value= "">Select category...</option>
                                 <option value= "vegan">Vegan</option>
                                 <option value= "keto">Keto</option>
+                                <option value= "gluten free">Gluten Free</option>
+                                <option value= "lactose">Lactose</option>
+                                <option value= "nut free">Nut Free</option>
                             </Form.Select>
                         </Form.Group>
 

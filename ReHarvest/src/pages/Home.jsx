@@ -40,15 +40,9 @@ function Home(){
 
     const handleVegan= () => setActiveFilter("vegan");
     const handleKeto= () => setActiveFilter("keto");
-    const handleGlutenFree= () => {
-        console.log('Gluten Free filter')
-    }
-    const handleLactose= () => {
-        console.log('Lactose filter')
-    }
-    const handleNutFree= () => {
-        console.log('Nut Free filter')
-    }
+    const handleGlutenFree= () => setActiveFilter("gluten free");
+    const handleLactose= () => setActiveFilter("lactose");
+    const handleNutFree= () => setActiveFilter("nut free");
     
 
     const filteredPosts = activeFilter ? posts.filter((post) => post?.diet?.toLowerCase()=== activeFilter) : posts;
