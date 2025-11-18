@@ -28,9 +28,10 @@ const UserProfile = () => {
             return;
         }
         try {
-            await uploadPost(addPost.title, addPost.content, addPost.category, addPost.videoUrl, 0, file);
-            setPosts([...posts, addPost]);
+            const newPost = await uploadPost(addPost.title, addPost.content, addPost.category, addPost.videoUrl, 0, file, diet);
+            setPosts(prevPosts => [newPost, ...prevPosts]);
             setAddPost({ title: "", content: "", category: "", videoUrl: ""});
+            setDiet("");
             setFile(null);
             setShowAddPost(false);
         }
@@ -219,6 +220,10 @@ const UserProfile = () => {
                     title={post.title}
                     content={post.content}
                     category={post.category}
+<<<<<<< HEAD
+=======
+                    fileUrl={post.fileUrl}
+>>>>>>> fd8cf21 (updated file)
                     videoUrl={post.videoUrl}
                     initialLikes={0}
                     initialComments={[]}
