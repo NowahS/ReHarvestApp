@@ -1,7 +1,7 @@
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db, auth } from "./firebase";
 
-export const uploadPost = async (title, content, rating = 0, videoUrl = "") => {
+export const uploadPost = async (title, content, videoUrl = "", rating = 0, ) => {
   const user = auth.currentUser;
 
   if (!user) {

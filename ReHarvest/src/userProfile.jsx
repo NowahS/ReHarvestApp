@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { uploadPost } from "./firebasePosts";
 import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
@@ -7,13 +7,15 @@ import Button from 'react-bootstrap/Button';
 import ProfilePicture from "./assets/profileIcon.png";
 import Nav from "react-bootstrap/Nav";
 import Post from "./pages/Post";
-import Card from 'react-bootstrap/Card'
 
 const UserProfile = () => {
     const [query, setQuery] = useState('');
     const [showAddPost, setShowAddPost] = useState(false);
     const [addPost, setAddPost] = useState({ title: "", content: "", videoUrl: "" });
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    
 
     const handleAddPost = async (e) => {
         e.preventDefault();
@@ -42,12 +44,15 @@ const UserProfile = () => {
         }));
     };
 
+    
+
     const handleEditSave = () => {
         if (isEditing) {
             console.log('Profile Saved:', profileData);
         }
         setIsEditing(!isEditing);
     };
+
 
     return (
         <>
@@ -126,9 +131,8 @@ const UserProfile = () => {
                     <Form onSubmit = {handleAddPost}>
                         <Form.Control type="text" placeholder = "Title" value = {addPost.title} onChange = {(e) => setAddPost({...addPost, title: e.target.value})}/>
                         <Form.Control as="textarea" placeholder = "Content" value = {addPost.content} onChange = {(e) => setAddPost({...addPost, content: e.target.value})}/>
-                        <Button type="submit">Submit</Button>
-
                         <Form.Control type="text" placeholder= "Video URL (optional YouTube/Vimeo or mp4 link)" value= {addPost.videoUrl} onChange={(e) => setAddPost({...addPost, videoUrl: e.target.value })} className= "mb-2"/>
+                        <Button type="submit">Submit</Button>
                     </Form>
                 )}
             </div>
