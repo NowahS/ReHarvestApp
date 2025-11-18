@@ -17,18 +17,14 @@ const UserProfile = () => {
     const [showAddPost, setShowAddPost] = useState(false);
     const [addPost, setAddPost] = useState({ title: "", content: "", category: "", videoUrl: "" });
     const [posts, setPosts] = useState([]);
-<<<<<<< HEAD
     const [loading, setLoading] = useState(true);
     const[diet, setDiet] = useState("");
 
     
-=======
->>>>>>> 90d02c0d45ef3cacc512804346e6d341b72e19c4
     const [file, setFile] = useState(null);
 
     const [profileImage, setProfileImage] = useState(ProfilePicture);
     const [newProfileFile, setNewProfileFile] = useState(null);
-<<<<<<< HEAD
 
     useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -49,20 +45,6 @@ const UserProfile = () => {
             setPosts(prevPosts => [newPost, ...prevPosts]);
             setAddPost({ title: "", content: "", videoUrl: ""});
             setDiet("");
-=======
-
-    const handleAddPost = async (e) => {
-        e.preventDefault();
-
-        if (!addPost.category) {
-            alert("Please choose a category before posting.");
-            return;
-        }
-        try {
-            await uploadPost(addPost.title, addPost.content, addPost.category, addPost.videoUrl, 0, file);
-            setPosts([...posts, addPost]);
-            setAddPost({ title: "", content: "", category: "", videoUrl: ""});
->>>>>>> 90d02c0d45ef3cacc512804346e6d341b72e19c4
             setFile(null);
             setShowAddPost(false);
         }
@@ -71,7 +53,6 @@ const UserProfile = () => {
         } 
     };
 
-<<<<<<< HEAD
     const showUserPosts = async (uid) => {
         if (!uid) {
             return;
@@ -101,8 +82,6 @@ const UserProfile = () => {
     showUserPosts();
   }, []);  
 
-=======
->>>>>>> 90d02c0d45ef3cacc512804346e6d341b72e19c4
     const [profileData, setProfileData] = useState({
         username: 'Username',
         bio: '',
@@ -136,10 +115,6 @@ const UserProfile = () => {
         }
         setIsEditing(!isEditing);
     }; 
-<<<<<<< HEAD
-
-=======
->>>>>>> 90d02c0d45ef3cacc512804346e6d341b72e19c4
 
     return (
         <>
@@ -232,7 +207,6 @@ const UserProfile = () => {
 
                         <Form.Control as="textarea" placeholder = "Content" value = {addPost.content} onChange = {(e) => setAddPost({...addPost, content: e.target.value})}/>
                         
-<<<<<<< HEAD
                         <Form.Group className="mb-3">
                             <Form.Label>Diet Category</Form.Label>
                             <Form.Select value={diet} onChange={(e) => setDiet(e.target.value)}>
@@ -241,16 +215,6 @@ const UserProfile = () => {
                                 <option value= "keto">Keto</option>
                             </Form.Select>
                         </Form.Group>
-=======
-                        <Form.Control placeholder= "Category" value={addPost.category} onChange={(e) => setAddPost({ ...addPost, category: e.target.value })}/>
-                        
-                        <option value="">Choose a category...</option>
-                        <option value="Vegan">Vegan</option>
-                        <option value="Keto">Keto</option>
-                        <option value="Gluten Free">Gluten Free</option>
-                        <option value="Lactose">Lactose</option>
-                        <option value="Nut Free">Nut Free</option>
->>>>>>> 90d02c0d45ef3cacc512804346e6d341b72e19c4
 
                         <Form.Group>
                             <Form.Label>Add a Photo</Form.Label>
@@ -274,11 +238,7 @@ const UserProfile = () => {
                     id={post.id}
                     title={post.title}
                     content={post.content}
-<<<<<<< HEAD
                     fileUrl={post.fileUrl}
-=======
-                    category={post.category}
->>>>>>> 90d02c0d45ef3cacc512804346e6d341b72e19c4
                     videoUrl={post.videoUrl}
                     initialLikes={0}
                     initialComments={[]}
