@@ -223,7 +223,6 @@ const UserProfile = () => {
                             <Form.Label>Add a Photo</Form.Label>
                             <Form.Control type = "file" onChange = {(e) => setFile(e.target.files[0])} accept="image/*"/>
                         </Form.Group>
-                        <Button type="submit">Submit</Button>
 
                         <Form.Control type="text" placeholder= "Video URL (optional YouTube/Vimeo or mp4 link)" value= {addPost.videoUrl} onChange={(e) => setAddPost({...addPost, videoUrl: e.target.value })} className= "mb-2"/>
                         <Button type="submit">Submit</Button>
