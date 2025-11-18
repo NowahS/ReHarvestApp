@@ -9,6 +9,7 @@ import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
 function Home(){
     const [posts, setPosts] = useState([]);
+    const [filter, setFilter] = useState(null);
 
     const showPosts = async () => {
       try{
@@ -32,8 +33,27 @@ function Home(){
     const[searchQuery, setSearchQuery] = useState('')
     const handleSearch = () => {
         console.log('Searching for:', searchQuery)
+        setFilter(null)
     }
 
+    const handleFilter = (filterName) => {
+      console.log(`${filterName} filter toggled`)
+      setFilter(filter === filterName ? null : filterName)
+    }
+
+    const filteredPosts = posts.filter((post) => {
+      if (!filter) return true;
+
+      return (
+        post.category && post.category.toLowerCase() === filter.toLowerCase()
+      )
+    })
+
+    const getVariant = (filterName, defaultVariant) => {
+      return filter === filterName ? "primary" : defaultVariant
+    }
+
+    /*
     const handleVegan= () => {
         console.log('Vegan filter')
     }
@@ -49,6 +69,7 @@ function Home(){
     const handleNutFree= () => {
         console.log('Nut Free filter')
     }
+    */
 
     return(
         <>
@@ -95,40 +116,40 @@ function Home(){
         {/*Filter buttons*/}
         <div className= "filter-buttons">
         <Button 
-        variant="success"
+        variant={getVariant("Vegan", "success")}
         size="lg"  
-        onClick={handleVegan}
+        onClick={() => handleFilter("Vegan")}
       >
         VEGAN
       </Button>
       <Button  
-        variant="warning"
+        variant={getVariant("Keto", "warning")}
         size="lg"  
-        onClick={handleVegan} 
+        onClick={() => handleFilter("Keto")} 
       >
         Keto
       </Button>
 
       <Button 
-        variant="danger"
+        variant={getVariant("Gluten Free", "danger")}
         size="lg"  
-        onClick={handleGlutenFree} 
+        onClick={() => handleFilter("Gluten Free")}
       >
         Gluten Free
       </Button>
 
       <Button 
-        variant="info"
+        variant={getVariant("Lactose", "info")}
         size="lg"  
-        onClick={handleLactose} 
+        onClick={() => handleFilter("Lactose")}
       >
         Lactose
       </Button>
 
       <Button 
-        variant="secondary"
+        variant={getVariant("Nut Free", "secondary")}
         size="lg"  
-        onClick={handleNutFree} 
+        onClick={() => handleFilter("Nut Free")} 
       >
         Nut Free
       </Button>
@@ -137,12 +158,14 @@ function Home(){
 
         <div className="latest-posts">Latest Post</div>
           <div style={{ backgroundColor: 'white', color: 'black' }}>
-            {posts.map((post) => (
+            {/*{posts.map((post) => ( */}
+            {filteredPosts.map((post) => (
               <Post
               key = {post.id}
               id={post.id}
               title={post.title}
               content= {post.content}
+              category= {post.category}
               videoUrl = {post.videoUrl}
               initialLikes = {0}
               initialComments={[]}

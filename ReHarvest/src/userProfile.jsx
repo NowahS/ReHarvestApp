@@ -12,7 +12,7 @@ import Card from 'react-bootstrap/Card'
 const UserProfile = () => {
     const [query, setQuery] = useState('');
     const [showAddPost, setShowAddPost] = useState(false);
-    const [addPost, setAddPost] = useState({ title: "", content: "", videoUrl: "" });
+    const [addPost, setAddPost] = useState({ title: "", content: "", category: "", videoUrl: "" });
     const [posts, setPosts] = useState([]);
     const [file, setFile] = useState(null);
 
@@ -21,10 +21,15 @@ const UserProfile = () => {
 
     const handleAddPost = async (e) => {
         e.preventDefault();
+
+        if (!addPost.category) {
+            alert("Please choose a category before posting.");
+            return;
+        }
         try {
-            await uploadPost(addPost.title, addPost.content, addPost.videoUrl, 0, file);
+            await uploadPost(addPost.title, addPost.content, addPost.category, addPost.videoUrl, 0, file);
             setPosts([...posts, addPost]);
-            setAddPost({ title: "", content: "", videoUrl: ""});
+            setAddPost({ title: "", content: "", category: "", videoUrl: ""});
             setFile(null);
             setShowAddPost(false);
         }
@@ -157,6 +162,15 @@ const UserProfile = () => {
                         <Form.Control type="text" placeholder = "Title" value = {addPost.title} onChange = {(e) => setAddPost({...addPost, title: e.target.value})} required/>
 
                         <Form.Control as="textarea" placeholder = "Content" value = {addPost.content} onChange = {(e) => setAddPost({...addPost, content: e.target.value})}/>
+                        
+                        <Form.Control placeholder= "Category" value={addPost.category} onChange={(e) => setAddPost({ ...addPost, category: e.target.value })}/>
+                        
+                        <option value="">Choose a category...</option>
+                        <option value="Vegan">Vegan</option>
+                        <option value="Keto">Keto</option>
+                        <option value="Gluten Free">Gluten Free</option>
+                        <option value="Lactose">Lactose</option>
+                        <option value="Nut Free">Nut Free</option>
 
                         <Form.Group>
                             <Form.Label>Add a Photo</Form.Label>
@@ -179,6 +193,7 @@ const UserProfile = () => {
                     id={post.id}
                     title={post.title}
                     content={post.content}
+                    category={post.category}
                     videoUrl={post.videoUrl}
                     initialLikes={0}
                     initialComments={[]}
