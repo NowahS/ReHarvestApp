@@ -33,23 +33,6 @@ function Post({ id, title, content, initialLikes, initialComments, fileUrl, rati
     if(match){
       return `https://www.youtube.com/embed/${match[1]}`;
     }
-  /* YouTube full URL
-  if (url.includes("youtube.com/watch")) {
-    const videoId = url.split("v=")[1].split("&")[0]; // strip extra params
-    return `https://www.youtube.com/embed/${videoId}`;
-  }
-
-  // YouTube short URL
-  if (url.includes("youtu.be/")) {
-    const videoId = url.split("youtu.be/")[1].split("?")[0];
-    return `https://www.youtube.com/embed/${videoId}`;
-  }
-
-  // Vimeo URL
-  if (url.includes("vimeo.com/")) {
-    const videoId = url.split("/").pop().split("?")[0];
-    return `https://player.vimeo.com/video/${videoId}`;
-  }*/
 
   // Otherwise, assume direct mp4
   return url;
