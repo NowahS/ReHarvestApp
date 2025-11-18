@@ -1,7 +1,7 @@
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db, auth, storage, ref, uploadBytes, getDownloadURL } from "./firebase";
 
-export const uploadPost = async (title, content = "", rating = 0, videoUrl = "", file = null) => {
+export const uploadPost = async (title, content = "", category, rating = 0, videoUrl = "", file = null) => {
   const user = auth.currentUser;
 
   if (!user) {
@@ -12,6 +12,7 @@ export const uploadPost = async (title, content = "", rating = 0, videoUrl = "",
   const postData = {
     userId: user.uid,
     title: title,
+    category: category,
     rating,
     createdAt: serverTimestamp(),
   };

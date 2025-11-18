@@ -8,6 +8,7 @@ import ProfilePicture from "./assets/profileIcon.png";
 import Nav from "react-bootstrap/Nav";
 import Post from "./pages/Post";
 import Card from 'react-bootstrap/Card'
+import { FormLabel } from 'react-bootstrap';
 
 const UserProfile = () => {
     const [query, setQuery] = useState('');
@@ -164,13 +165,37 @@ const UserProfile = () => {
                         <Form.Control as="textarea" placeholder = "Content" value = {addPost.content} onChange = {(e) => setAddPost({...addPost, content: e.target.value})}/>
                         
                         <Form.Control placeholder= "Category" value={addPost.category} onChange={(e) => setAddPost({ ...addPost, category: e.target.value })}/>
-                        
-                        <option value="">Choose a category...</option>
-                        <option value="Vegan">Vegan</option>
-                        <option value="Keto">Keto</option>
-                        <option value="Gluten Free">Gluten Free</option>
-                        <option value="Lactose">Lactose</option>
-                        <option value="Nut Free">Nut Free</option>
+
+                            <Button
+                                variant={addPost.category === "Vegan" ? "success" : "outline-success"}
+                                onClick={() => setAddPost({ ...addPost, category: "Vegan" })}
+                            >
+                                Vegan
+                            </Button>
+                            <Button
+                                variant={addPost.category === "Keto" ? "warning" : "outline-warning"}
+                                onClick={() => setAddPost({ ...addPost, category: "Keto" })}
+                            >
+                                Keto
+                            </Button>
+                            <Button
+                                variant={addPost.category === "Gluten Free" ? "danger" : "outline-danger"}
+                                onClick={() => setAddPost({ ...addPost, category: "Gluten Free" })}
+                            >
+                                Gluten Free
+                            </Button>
+                            <Button
+                                variant={addPost.category === "Lactose" ? "info" : "outline-info"}
+                                onClick={() => setAddPost({ ...addPost, category: "Lactose" })}
+                            >
+                                Lactose
+                            </Button>
+                            <Button
+                                variant={addPost.category === "Nut Free" ? "secondary" : "outline-secondary"}
+                                onClick={() => setAddPost({ ...addPost, category: "Nut Free" })}
+                            >
+                                Nut Free
+                            </Button>
 
                         <Form.Group>
                             <Form.Label>Add a Photo</Form.Label>
