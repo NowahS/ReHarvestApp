@@ -35,6 +35,7 @@ function Home(){
     const[searchQuery, setSearchQuery] = useState('')
     const handleSearch = () => {
         console.log('Searching for:', searchQuery)
+        setFilter(null)
     }
 
     const handleVegan= () => setActiveFilter("vegan");
@@ -48,6 +49,7 @@ function Home(){
     const handleNutFree= () => {
         console.log('Nut Free filter')
     }
+    
 
     const filteredPosts = activeFilter ? posts.filter((post) => post?.diet?.toLowerCase()=== activeFilter) : posts;
 

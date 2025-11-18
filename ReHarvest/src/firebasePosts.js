@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import { collection, addDoc, getDoc, serverTimestamp} from "firebase/firestore";
 import { db, auth, storage, ref, uploadBytes, getDownloadURL } from "./firebase";
 
 export const uploadPost = async (title, content = "", videoUrl = "", rating = 0, file = null, diet = "") => {
+=======
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db, auth, storage, ref, uploadBytes, getDownloadURL } from "./firebase";
+
+export const uploadPost = async (title, content = "", rating = 0, videoUrl = "", file = null) => {
+>>>>>>> 90d02c0d45ef3cacc512804346e6d341b72e19c4
   const user = auth.currentUser;
 
   if (!user) {
@@ -22,7 +29,11 @@ export const uploadPost = async (title, content = "", videoUrl = "", rating = 0,
   }
 
   if (file){
+<<<<<<< HEAD
     const fileRef = ref(storage, `posts/${user.uid}/${file.name}_${Date.now()}`);
+=======
+    const fileRef = ref(storage, 'posts/${user.uid}/${file.name}_${serverTimestamp()}');
+>>>>>>> 90d02c0d45ef3cacc512804346e6d341b72e19c4
     const snapshot = await uploadBytes(fileRef, file);
     const downloadURL = await getDownloadURL(snapshot.ref);
     postData.fileUrl = downloadURL;
