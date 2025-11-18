@@ -42,7 +42,6 @@ function Post({ id, title, content, initialLikes, initialComments, fileUrl, rati
     } 
     catch (error) {
       console.error("Error adding comment:", error);
-      alert("Failed to post comment.");
     }
   }
 
