@@ -142,7 +142,7 @@ function Home(){
               content= {post.content}
               fileUrl = {post.fileUrl}
               videoUrl = {post.videoUrl}
-              initialLikes = {0}
+              initialLikes = {post.likes || 0}
               initialComments={[]}
               rating={post.rating || 0}/>  
             ))}
