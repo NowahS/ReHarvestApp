@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { db, auth } from "./firebase";
+import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { uploadPost } from "./firebasePosts";
 import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
@@ -8,28 +10,41 @@ import ProfilePicture from "./assets/profileIcon.png";
 import Nav from "react-bootstrap/Nav";
 import Post from "./pages/Post";
 import Card from 'react-bootstrap/Card'
+import { FormLabel } from 'react-bootstrap';
 
 const UserProfile = () => {
-    const [query, setQuery] = useState('');
+    //const [query, setQuery] = useState('');
     const [showAddPost, setShowAddPost] = useState(false);
     const [addPost, setAddPost] = useState({ title: "", content: "", category: "", videoUrl: "" });
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const[diet, setDiet] = useState("");
+
+    
     const [file, setFile] = useState(null);
 
     const [profileImage, setProfileImage] = useState(ProfilePicture);
     const [newProfileFile, setNewProfileFile] = useState(null);
 
+    useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+        if (user) {
+        const userPosts = await showUserPosts(user.uid);
+        setPosts(userPosts);
+        }
+    });
+
+    return () => unsubscribe(); 
+    }, []);
+
+
     const handleAddPost = async (e) => {
         e.preventDefault();
-
-        if (!addPost.category) {
-            alert("Please choose a category before posting.");
-            return;
-        }
         try {
-            await uploadPost(addPost.title, addPost.content, addPost.category, addPost.videoUrl, 0, file);
-            setPosts([...posts, addPost]);
-            setAddPost({ title: "", content: "", category: "", videoUrl: ""});
+            const newPost = await uploadPost(addPost.title, addPost.content, addPost.videoUrl, 0, file, diet);
+            setPosts(prevPosts => [newPost, ...prevPosts]);
+            setAddPost({ title: "", content: "", videoUrl: ""});
+            setDiet("");
             setFile(null);
             setShowAddPost(false);
         }
@@ -37,6 +52,35 @@ const UserProfile = () => {
             console.log(error);
         } 
     };
+
+    const showUserPosts = async (uid) => {
+        if (!uid) {
+            return;
+        }
+        try {
+        const postsCollection = collection(db, "posts");
+        const q = query(
+            postsCollection,
+            where("userId", "==", uid)
+        );
+
+        const querySnapshot = await getDocs(q);
+        const postsData = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+
+        return postsData;
+        } 
+        catch (error) {
+        console.log("Error fetching user posts:", error);
+        return [];
+        }
+    };   
+
+    useEffect(() => {
+    showUserPosts();
+  }, []);  
 
     const [profileData, setProfileData] = useState({
         username: 'Username',
@@ -163,14 +207,14 @@ const UserProfile = () => {
 
                         <Form.Control as="textarea" placeholder = "Content" value = {addPost.content} onChange = {(e) => setAddPost({...addPost, content: e.target.value})}/>
                         
-                        <Form.Control placeholder= "Category" value={addPost.category} onChange={(e) => setAddPost({ ...addPost, category: e.target.value })}/>
-                        
-                        <option value="">Choose a category...</option>
-                        <option value="Vegan">Vegan</option>
-                        <option value="Keto">Keto</option>
-                        <option value="Gluten Free">Gluten Free</option>
-                        <option value="Lactose">Lactose</option>
-                        <option value="Nut Free">Nut Free</option>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Diet Category</Form.Label>
+                            <Form.Select value={diet} onChange={(e) => setDiet(e.target.value)}>
+                                <option value= "">Select category...</option>
+                                <option value= "vegan">Vegan</option>
+                                <option value= "keto">Keto</option>
+                            </Form.Select>
+                        </Form.Group>
 
                         <Form.Group>
                             <Form.Label>Add a Photo</Form.Label>
@@ -179,6 +223,7 @@ const UserProfile = () => {
                         <Button type="submit">Submit</Button>
 
                         <Form.Control type="text" placeholder= "Video URL (optional YouTube/Vimeo or mp4 link)" value= {addPost.videoUrl} onChange={(e) => setAddPost({...addPost, videoUrl: e.target.value })} className= "mb-2"/>
+                        <Button type="submit">Submit</Button>
                     </Form>
             )}
 
@@ -187,13 +232,13 @@ const UserProfile = () => {
             <h2 className="w-100 text-white mt-4">Your Blog Posts</h2>
 
            <div>
-                {posts.map((post, index) => (
+                {posts.map(post => (
                     <Post
-                    key={index}
+                    key={post.id}
                     id={post.id}
                     title={post.title}
                     content={post.content}
-                    category={post.category}
+                    fileUrl={post.fileUrl}
                     videoUrl={post.videoUrl}
                     initialLikes={0}
                     initialComments={[]}

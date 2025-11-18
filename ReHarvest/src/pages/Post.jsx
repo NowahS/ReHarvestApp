@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { db } from "../firebase";
 import {doc, updateDoc} from "firebase/firestore";
 
-function Post({ id, title, content, initialLikes, initialComments, rating = 0, videoUrl}) {
+function Post({ id, title, content, initialLikes, initialComments, fileUrl, rating = 0, videoUrl}) {
   const [currentRating, setCurrentRating] = useState(rating);
   const[likes, setLikes] = useState(initialLikes || 0);
   const[comments, setComments] = useState(initialComments || []);
@@ -19,33 +19,71 @@ function Post({ id, title, content, initialLikes, initialComments, rating = 0, v
     }
   };
 
+  /*helper function*/
+  function convertToEmbedUrl(url) {
+  // YouTube full URL
+  if (url.includes("youtube.com/watch")) {
+    const videoId = url.split("v=")[1].split("&")[0]; // strip extra params
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+
+  // YouTube short URL
+  if (url.includes("youtu.be/")) {
+    const videoId = url.split("youtu.be/")[1].split("?")[0];
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+
+  // Vimeo URL
+  if (url.includes("vimeo.com/")) {
+    const videoId = url.split("/").pop().split("?")[0];
+    return `https://player.vimeo.com/video/${videoId}`;
+  }
+
+  // Otherwise, assume direct mp4
+  return url;
+}
+
+
+
   return (
     <div className="post-container mt-4 p-3 border rounded bg-light">
       <h4>{title}</h4>
       <p>{content}</p>
 
+      {/* Image Display */}
+      {fileUrl && (
+        <div className="my-3">
+          <img 
+            src={fileUrl} 
+            alt="Post attachment"
+            style={{ maxWidth: "250px", width: "100%", height: "auto"}}
+          />
+        </div>
+      )}
+
       {/*Video Embed code */}
       {videoUrl && (
         <div className="video-container my-3">
           {videoUrl.includes("youtube") || videoUrl.includes("vimeo") ? (
+            <div className="ratio ratio-16x9">
             <iframe
-            width= "560"
-            height="315"
-            src={videoUrl}
+            /*src={convertToEmbedUrl (videoUrl)}*/
+             src="https://www.youtube.com/embed/RaLzxZryEoA?si=ncMu-q3RqTbCojc0"
             title="Video post"
-            frameBorder="0"
-            allow= "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen>
+            allow= "accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            style={{border: 0}}>
             </iframe>
+            </div>
           ) : (
-            <video width= "500" height= "315" controls>
+            <video className= "w-100" controls style={{maxHeight: '500px'}}>
               <source src={videoUrl} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           )}
         </div>
       )}
-      
+
       <Button variant="primary" onClick={handleLike}>
         ❤️ Like ({likes})
       </Button>
