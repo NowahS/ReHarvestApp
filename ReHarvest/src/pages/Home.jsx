@@ -40,8 +40,7 @@ function Home(){
 
     const[searchQuery, setSearchQuery] = useState('')
     const handleSearch = () => {
-        console.log('Searching for:', searchQuery)
-        setFilter(null)
+        console.log('Searching for:', searchQuery);
     }
 
     const handleVegan= () => setActiveFilter("vegan");
@@ -51,7 +50,22 @@ function Home(){
     const handleNutFree= () => setActiveFilter("nut free");
     
 
-    const filteredPosts = activeFilter ? posts.filter((post) => post?.diet?.toLowerCase()=== activeFilter) : posts;
+    const filteredPosts = posts.filter((post) =>{
+      if (activeFilter){
+        return post?.diet?.toLowerCase() === activeFilter;
+      }
+      return true;
+    })
+      .filter((post) =>{
+        const search = searchQuery.toLowerCase();
+        if (searchQuery.trim()){
+          return (post?.title?.toLowerCase().includes(search) ||
+          post?.content?.toLowerCase().includes(search));         
+        }
+        else {
+          return true;
+        }
+      })
 
     return(
         <>
@@ -88,7 +102,7 @@ function Home(){
                 placeholder= "Search"
                 className="mr-sm-2"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => { setSearchQuery(e.target.value); setActiveFilter(null); }}
             />
             <Button variant= "link" onClick={handleSearch}>
               <i className= "bi bi-search"></i>

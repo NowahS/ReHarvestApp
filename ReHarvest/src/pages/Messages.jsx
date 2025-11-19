@@ -14,7 +14,7 @@ function Messages() {
                 <div className= "nav-left">
                 <img src= "/Logo.png" alt="ReHarvest Logo" className= "logo"/>
                 </div>               
-                <Nav fill variant="tabs" defaultActiveKey= "/home" className="navbar-custom mb-4">
+                <Nav fill variant="tabs" defaultActiveKey= "/" className="navbar-custom mb-4">
             
                 <Nav.Item>
                     <Nav.Link href="/home">Home</Nav.Link>
