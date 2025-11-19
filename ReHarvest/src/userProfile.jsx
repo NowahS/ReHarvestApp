@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db, auth } from "./firebase";
+import { useNavigate } from 'react-router-dom';
 import { getUserBlog, editUserBlog } from "./firebaseBio";
 import { collection, getDocs, query, where} from "firebase/firestore";
 import { uploadPost } from "./firebasePosts";
@@ -25,6 +26,11 @@ const UserProfile = () => {
 
     const [profileImage, setProfileImage] = useState(ProfilePicture);
     const [newProfileFile, setNewProfileFile] = useState(null);
+
+    const navigate = useNavigate();
+    const handleMessages = () => {
+      navigate("/messages");
+    }  
 
     useEffect(() => {
     const fetchData = async () => {
@@ -140,7 +146,11 @@ const UserProfile = () => {
 
     return (
         <>
-            <Nav fill variant="tabs" defaultActiveKey="/userprofile">
+          <header className= "nav-custom">
+            <div className= "nav-left">
+              <img src= "/Logo.png" alt="ReHarvest Logo" className= "logo"/>
+            </div>
+            <Nav fill variant="tabs" defaultActiveKey="/home" className="navbar-custom mb-4">
                 <Nav.Item>
                     <Nav.Link href="/home">Home</Nav.Link>
                 </Nav.Item>
@@ -153,7 +163,11 @@ const UserProfile = () => {
                 <Nav.Item>
                     <Nav.Link href="/userprofile">Blog</Nav.Link>
                 </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link><img src= "/whiteMessage.png" alt="Messages Icon" className= "nav-icon" onClick = {handleMessages}/></Nav.Link>
+                </Nav.Item>
             </Nav>
+            </header>
             <br/>
 
             <div className="post-container mt-4 p-3 border rounded bg-light">
