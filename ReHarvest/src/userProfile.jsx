@@ -13,7 +13,6 @@ import Card from 'react-bootstrap/Card'
 import { FormLabel } from 'react-bootstrap';
 
 const UserProfile = () => {
-    //const [query, setQuery] = useState('');
     const [showAddPost, setShowAddPost] = useState(false);
     const [addPost, setAddPost] = useState({ title: "", content: "", category: "", videoUrl: "" });
     const [posts, setPosts] = useState([]);
@@ -245,17 +244,6 @@ const UserProfile = () => {
                     initialLikes={post.likes || 0}
                     initialComments={post.comments || []}
                     rating={post.rating || 0}/>
-                           /* <Card key={index}>
-                                <Card.Body>
-                                    <Card.Title>{post.title}</Card.Title>
-                                    <Card.Text>{post.content}</Card.Text>
-                                    {post.file && (
-                                        <Card.Text>
-                                            {post.createdAt}
-                                            File attached: {post.file.name}
-                                        </Card.Text>)}
-                                </Card.Body>
-                            </Card>*/
                 ))}
             </div> 
         </>

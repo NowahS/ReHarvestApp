@@ -78,7 +78,7 @@ function Post({ id, title, content, initialLikes, initialComments, fileUrl, rati
 
 
   return (
-    <div className="post-container mt-4 p-3 border rounded bg-light">
+    <div className="post-container mt-4 p-3 border rounded bg-light" style= {{ maxWidth: "750px", margin: "40px auto"}}>
       <h4>{title}</h4>
       <p>{content}</p>
 
@@ -97,6 +97,7 @@ function Post({ id, title, content, initialLikes, initialComments, fileUrl, rati
       {videoUrl && (
         <div className="video-container my-3">
           {videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")|| videoUrl.includes("vimeo") ? (
+            <div style={{width: "100%", maxWidth: "800px", margin: "0 auto"}}>
             <div className="ratio ratio-16x9">
             <iframe
             src={convertToEmbedUrl (videoUrl)}
@@ -105,6 +106,7 @@ function Post({ id, title, content, initialLikes, initialComments, fileUrl, rati
             allowFullScreen
             style={{border: 0}}>
             </iframe>
+            </div>
             </div>
           ) : (
             <video className= "w-100" controls style={{maxHeight: '500px'}}>
