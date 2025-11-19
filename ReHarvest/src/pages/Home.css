@@ -30,6 +30,13 @@
   align-items: center;
 }
 
+.nav-icon{
+  display: flex;
+  justify-content: flex-end;
+  width: 90px;
+  height: auto;
+}
+
 .nav-links{
   display: flex;
   justify-content: flex-end;
@@ -41,6 +48,7 @@
   border-radius: 30px;
   padding: 0.5rem 1rem;
   display: flex;
+  flex-grow: 1;
   align-items: center;
   width: 60%;
   margin: 2rem auto;
@@ -50,6 +58,11 @@
   border: none;
   background: transparent;
   flex-grow: 1;
+}
+
+.search-bar form {
+    flex-grow: 1; 
+    margin: 0; 
 }
 
 .filter-buttons {

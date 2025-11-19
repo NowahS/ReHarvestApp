@@ -9,6 +9,7 @@ import Home from './pages/Home'
 import Opening from './pages/Opening'
 import UserProfile from './userProfile'
 import Post from './pages/Post'
+import Messages from './pages/Messages'
 import {Button} from 'react-bootstrap'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {Container} from 'react-bootstrap'
@@ -26,6 +27,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path= "/userprofile" element={<UserProfile />}/>
           <Route path= "/post" element={<Post />} />
+          <Route path= "/messages" element={<Messages />}/>
         </Routes>
       </Router>
 

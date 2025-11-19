@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react"
 import "./Home.css"
 import Nav from "react-bootstrap/Nav"
+import { useNavigate } from 'react-router-dom';
 import {Form, FormControl, Button, ButtonGroup, Stack} from "react-bootstrap"
 import Post from "./Post"
 import {db} from "../firebase"
@@ -11,6 +12,11 @@ function Home(){
     const [posts, setPosts] = useState([]);
 
     const[activeFilter, setActiveFilter] = useState(null);
+
+    const navigate = useNavigate();
+    const handleMessages = () => {
+      navigate("/messages");
+    }
 
 
     const showPosts = async () => {
@@ -68,9 +74,11 @@ function Home(){
             <Nav.Item>
                 <Nav.Link href="/userprofile">Blog</Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+                <Nav.Link><img src= "/whiteMessage.png" alt="Messages Icon" className= "nav-icon" onClick = {handleMessages}/></Nav.Link>
+            </Nav.Item>
             </Nav>
-          </header>
-        
+        </header>
         {/*Code for the search bar*/}
         <div className= "search-bar">
           <i className="bi bi-list"/>
