@@ -42,7 +42,7 @@ TOADD picture of the team
 * [Sprint planning](https://docs.google.com/spreadsheets/d/1voAlLn6wZZea9wKupuXWM1POCDhOYgSrEWuqKm0XB5s/edit?gid=1859075779#gid=1859075779)
 * [Scrums](https://docs.google.com/document/d/1BxAwetrJrufxX0SfmtBXKcoXORkHaQ_-hqQYPwwi5jc/edit?usp=sharing)
 * [Sprint demo video]()
-* [Sprint retrospective]()
+* [Sprint retrospective](https://docs.google.com/document/d/1KUp8AaPb4Hvl3LHWOoOMk6NVGFbM3qvDMLcF0gEzLO0/edit?usp=sharing)
 
 ### Sprint 3
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { db, auth } from "./firebase";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { uploadPost } from "./firebasePosts";
@@ -13,10 +13,13 @@ import Card from 'react-bootstrap/Card'
 import { FormLabel } from 'react-bootstrap';
 
 const UserProfile = () => {
-    //const [query, setQuery] = useState('');
     const [showAddPost, setShowAddPost] = useState(false);
-    const [addPost, setAddPost] = useState({ title: "", content: "", videoUrl: "" });
+    const [addPost, setAddPost] = useState({ title: "", content: "", category: "", videoUrl: "" });
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const[diet, setDiet] = useState("");
+
+    
     const [file, setFile] = useState(null);
 
     const [profileImage, setProfileImage] = useState(ProfilePicture);
@@ -37,9 +40,10 @@ const UserProfile = () => {
     const handleAddPost = async (e) => {
         e.preventDefault();
         try {
-            const newPost = await uploadPost(addPost.title, addPost.content, addPost.videoUrl, 0, file);
+            const newPost = await uploadPost(addPost.title, addPost.content, addPost.videoUrl, 0, file, diet);
             setPosts(prevPosts => [newPost, ...prevPosts]);
             setAddPost({ title: "", content: "", videoUrl: ""});
+            setDiet("");
             setFile(null);
             setShowAddPost(false);
         }
@@ -201,14 +205,26 @@ const UserProfile = () => {
                         <Form.Control type="text" placeholder = "Title" value = {addPost.title} onChange = {(e) => setAddPost({...addPost, title: e.target.value})} required/>
 
                         <Form.Control as="textarea" placeholder = "Content" value = {addPost.content} onChange = {(e) => setAddPost({...addPost, content: e.target.value})}/>
+                        
+                        <Form.Group className="mb-3">
+                            <Form.Label>Diet Category</Form.Label>
+                            <Form.Select value={diet} onChange={(e) => setDiet(e.target.value)}>
+                                <option value= "">Select category...</option>
+                                <option value= "vegan">Vegan</option>
+                                <option value= "keto">Keto</option>
+                                <option value= "gluten free">Gluten Free</option>
+                                <option value= "lactose">Lactose</option>
+                                <option value= "nut free">Nut Free</option>
+                            </Form.Select>
+                        </Form.Group>
 
                         <Form.Group>
                             <Form.Label>Add a Photo</Form.Label>
                             <Form.Control type = "file" onChange = {(e) => setFile(e.target.files[0])} accept="image/*"/>
                         </Form.Group>
-                        <Button type="submit">Submit</Button>
 
                         <Form.Control type="text" placeholder= "Video URL (optional YouTube/Vimeo or mp4 link)" value= {addPost.videoUrl} onChange={(e) => setAddPost({...addPost, videoUrl: e.target.value })} className= "mb-2"/>
+                        <Button type="submit">Submit</Button>
                     </Form>
             )}
 
@@ -225,20 +241,9 @@ const UserProfile = () => {
                     content={post.content}
                     fileUrl={post.fileUrl}
                     videoUrl={post.videoUrl}
-                    initialLikes={0}
-                    initialComments={[]}
+                    initialLikes={post.likes || 0}
+                    initialComments={post.comments || []}
                     rating={post.rating || 0}/>
-                           /* <Card key={index}>
-                                <Card.Body>
-                                    <Card.Title>{post.title}</Card.Title>
-                                    <Card.Text>{post.content}</Card.Text>
-                                    {post.file && (
-                                        <Card.Text>
-                                            {post.createdAt}
-                                            File attached: {post.file.name}
-                                        </Card.Text>)}
-                                </Card.Body>
-                            </Card>*/
                 ))}
             </div> 
         </>

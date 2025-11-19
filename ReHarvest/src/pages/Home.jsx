@@ -10,6 +10,9 @@ import { collection, getDocs, query, orderBy } from "firebase/firestore";
 function Home(){
     const [posts, setPosts] = useState([]);
 
+    const[activeFilter, setActiveFilter] = useState(null);
+
+
     const showPosts = async () => {
       try{
         const postsCollection = collection(db, "posts");
@@ -32,23 +35,17 @@ function Home(){
     const[searchQuery, setSearchQuery] = useState('')
     const handleSearch = () => {
         console.log('Searching for:', searchQuery)
+        setFilter(null)
     }
 
-    const handleVegan= () => {
-        console.log('Vegan filter')
-    }
-    const handleKeto= () => {
-        console.log('Keto filter')
-    }
-    const handleGlutenFree= () => {
-        console.log('Gluten Free filter')
-    }
-    const handleLactose= () => {
-        console.log('Lactose filter')
-    }
-    const handleNutFree= () => {
-        console.log('Nut Free filter')
-    }
+    const handleVegan= () => setActiveFilter("vegan");
+    const handleKeto= () => setActiveFilter("keto");
+    const handleGlutenFree= () => setActiveFilter("gluten free");
+    const handleLactose= () => setActiveFilter("lactose");
+    const handleNutFree= () => setActiveFilter("nut free");
+    
+
+    const filteredPosts = activeFilter ? posts.filter((post) => post?.diet?.toLowerCase()=== activeFilter) : posts;
 
     return(
         <>
@@ -104,7 +101,7 @@ function Home(){
       <Button  
         variant="warning"
         size="lg"  
-        onClick={handleVegan} 
+        onClick={handleKeto} 
       >
         Keto
       </Button>
@@ -137,7 +134,7 @@ function Home(){
 
         <div className="latest-posts">Latest Post</div>
           <div style={{ backgroundColor: 'white', color: 'black' }}>
-            {posts.map((post) => (
+            {filteredPosts.map((post) => (
               <Post
               key = {post.id}
               id={post.id}
@@ -145,8 +142,8 @@ function Home(){
               content= {post.content}
               fileUrl = {post.fileUrl}
               videoUrl = {post.videoUrl}
-              initialLikes = {0}
-              initialComments={[]}
+              initialLikes = {post.likes || 0}
+              initialComments={post.comments || []}
               rating={post.rating || 0}/>  
             ))}
           </div>
