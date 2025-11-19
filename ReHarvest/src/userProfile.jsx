@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db, auth } from "./firebase";
-import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
+import { getUserBlog, editUserBlog } from "./firebaseBio";
+import { collection, getDocs, query, where} from "firebase/firestore";
 import { uploadPost } from "./firebasePosts";
 import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
@@ -26,11 +27,22 @@ const UserProfile = () => {
     const [newProfileFile, setNewProfileFile] = useState(null);
 
     useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+    const fetchData = async () => {
+        const user = auth.currentUser;
         if (user) {
-        const userPosts = await showUserPosts(user.uid);
-        setPosts(userPosts);
+            const profile = await getUserBlog(user.uid);
+            setProfileData({
+                username: profile.username || "",
+                bio: profile.userBio || "",
+                socials: profile.userSocials || "",
+            })
+            const userPosts = await showUserPosts(user.uid);
+            setPosts(userPosts);
         }
+    };
+
+    const unsubscribe = auth.onAuthStateChanged(() => {
+        fetchData();
     });
 
     return () => unsubscribe(); 
@@ -76,15 +88,12 @@ const UserProfile = () => {
         return [];
         }
     };   
-
-    useEffect(() => {
-    showUserPosts();
-  }, []);  
+ 
 
     const [profileData, setProfileData] = useState({
-        username: 'Username',
+        username: '',
         bio: '',
-        socials: '',
+        socials: ''
     });
 
     const [isEditing, setIsEditing] = useState(false);
@@ -105,14 +114,28 @@ const UserProfile = () => {
         }
     };
 
-    const handleEditSave = () => {
-        if (isEditing) {
-            console.log('Profile Saved:', profileData);
-            if (newProfileFile) {
-                console.log('New file detected for upload:', newProfileFile.name);
-            }
+    const handleEditSave = async (e) => {
+        e.preventDefault();
+        if (!isEditing) {
+                setIsEditing(true);
+                return;
         }
-        setIsEditing(!isEditing);
+        try{
+            const user = auth.currentUser;
+            if (!user){
+                alert("You aren't logged in");
+                return;
+            }
+            await editUserBlog(
+                profileData.username,
+                profileData.bio,
+                profileData.socials
+            );
+            setIsEditing(false);            
+        }
+        catch(error){
+            console.log(error);
+        }
     }; 
 
     return (
