@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate } from 'react-router-dom';
 import Nav from "react-bootstrap/Nav";
-import {Container} from 'react-bootstrap'
+import {Button, Col, Container, Row} from 'react-bootstrap'
 import Image from 'react-bootstrap/Image';
 import Market from "../assets/market.png";
 import Veggies from "../assets/veggies.png";
-import Food2 from "../assets/food2.png";
-import Plant from "../assets/plants.png";
-import World from "../assets/world.png";
+import Substainablity from "../assets/substainablity.png";
+import Food from "../assets/food.png";
+import Plate from "../assets/plate.png";
 
 function About (){
     const handleResource1 = () => window.open("https://sustainablefoodtrust.org/", '_blank');
     const handleResource2 = () => window.open("https://sustainablefoodlab.org/", '_blank');
-    const handleResourcee3 = () => window.open("https://foodprint.org/", '_blank');
+    const handleResource3 = () => window.open("https://foodprint.org/", '_blank');
 
     const navigate = useNavigate();
     const handleMessages = () => {
@@ -50,7 +50,9 @@ function About (){
     
     <Container>
         <div style={{ backgroundColor: 'white', color: 'black', padding: '20px', borderRadius: '15px' }}>
+            <br></br>
             <h1 className="mb-4 fw-bold">About ReHarvest</h1>
+            <br></br>
             <p>
             Our goal at ReHarvest is to solve the issue of over-consumption and food waste that 
             many of society contributes to due to over-purchasing goods such as with buying 
@@ -89,32 +91,56 @@ function About (){
             />
             <br></br>
             <br></br>
+            <br></br>
+
             <h3 className="mb-4 fw-bold">Resources</h3>
-            <div className= "resources">
+            <br></br>
+            <br></br>
+           
+            <div className= "d-flex flex-wrap">
                 <Image
-                    src={Food2}
-                    alt= "foods"
+                    src={Substainablity}
+                    alt= "image"
                     rounded
-                    className="mb-3"
-                    style={{ width: '300px', height: '300px', objectFit: 'cover' }}
-                    onClick={handleResource1}
+                    className="mb-3 me-4"
+                    style={{ width: '350px', height: '350px', objectFit: 'cover' }}
                 />
+                <Row className="mb-4 align-items-center">
+                    <Col md={30}> 
+                    <p className="mb-4 fw-bold">Learn about sustainable food and farming systems that are benifical to the environment.</p>
+                    <Button variant="success" onClick={handleResource1}>Find out more</Button>
+                    </Col>
+                </Row>
                 <Image
-                    src={Plant}
-                    alt= "plants"
+                    src={Food}
+                    alt= "image"
                     rounded
-                    className="mb-3"
-                    style={{ width: '300px', height: '300px', objectFit: 'cover' }}
-                    onClick={handleResource2}
+                    className="mb-3 me-4"
+                    style={{ width: '350px', height: '350px', objectFit: 'cover' }}
                 />
+                <Row className="mb-4 align-items-center">
+                    <Col md={30}> 
+                    <p className="mb-4 fw-bold">Shift sustainability from niche to mainstream in the food system.</p>
+                    <Button variant="success" onClick={handleResource2}>Find out more</Button>
+                    </Col>
+                </Row>
+                <br></br>
+                <br></br>
                 <Image
-                    src={World}
-                    alt= "world"
+                    src={Plate}
+                    alt= "image"
                     rounded
-                    className="mb-3"
-                    style={{ width: '300px', height: '300px', objectFit: 'cover' }}
-                    onClick={handleResourcee3}
+                    className="mb-3 me-4"
+                    style={{ width: '350px', height: '350px', objectFit: 'cover' }}
                 />
+                <Row className="mb-4 align-items-center">
+                    <Col md={30}> 
+                    <p className="mb-4 fw-bold">Lets help you make food choices that does not harm the environment, animals and people.</p>
+                    <Button variant="success" onClick={handleResource3}>Find out more</Button>
+                    </Col>
+                </Row>
+                <br></br>
+                <br></br>
             </div>
         
 
