@@ -10,6 +10,7 @@ import Opening from './pages/Opening'
 import UserProfile from './userProfile'
 import Post from './pages/Post'
 import Messages from './pages/Messages'
+import Market from './pages/Market'
 import {Button} from 'react-bootstrap'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {Container} from 'react-bootstrap'
@@ -28,6 +29,7 @@ function App() {
           <Route path= "/userprofile" element={<UserProfile />}/>
           <Route path= "/post" element={<Post />} />
           <Route path= "/messages" element={<Messages />}/>
+          <Route path="/market"element={<Market />}/>
         </Routes>
       </Router>
 

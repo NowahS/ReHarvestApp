@@ -83,7 +83,7 @@ function Home(){
                 <Nav.Link eventKey="link-1">About</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventKey="link-2">Market</Nav.Link>
+                <Nav.Link href="/market">Market</Nav.Link>
             </Nav.Item>
             <Nav.Item>
                 <Nav.Link href="/userprofile">Blog</Nav.Link>
