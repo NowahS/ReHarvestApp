@@ -10,7 +10,11 @@ import Opening from './pages/Opening'
 import UserProfile from './userProfile'
 import Post from './pages/Post'
 import Messages from './pages/Messages'
+<<<<<<< HEAD
 import Market from './pages/Market'
+=======
+import About from './pages/About'
+>>>>>>> 711790406a1159b11befd2d9584fdd0cdd900a9c
 import {Button} from 'react-bootstrap'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {Container} from 'react-bootstrap'
@@ -26,6 +30,7 @@ function App() {
          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/about" element={<About />} />
           <Route path= "/userprofile" element={<UserProfile />}/>
           <Route path= "/post" element={<Post />} />
           <Route path= "/messages" element={<Messages />}/>
