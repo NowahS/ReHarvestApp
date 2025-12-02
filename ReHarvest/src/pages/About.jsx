@@ -95,7 +95,6 @@ function About (){
 
             <h3 className="mb-4 fw-bold">Resources</h3>
             <br></br>
-            <br></br>
            
             <div className= "d-flex flex-wrap">
                 <Image

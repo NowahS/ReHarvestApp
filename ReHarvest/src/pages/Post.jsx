@@ -43,6 +43,7 @@ function Post({ id, userId, username, title, content, initialLikes, initialComme
     const commentData = {
       text: newCommentText.trim(),
       userId: user.uid,
+      displayName: user.displayName || "Anonymous User",
     }
     try{
       const postRef = doc(db, "posts", id);
@@ -156,7 +157,8 @@ function Post({ id, userId, username, title, content, initialLikes, initialComme
           comments.map((c, i) => (
           //<p key={i}>• {c}</p>)
           <p key={i}>
-            • User ({c.userId.substring(0, 4)}...): {c.text}
+            • **{c.displayName || `User (${c.userId.substring(0, 4)}...)`}**: {c.text}
+            {/*• User ({c.userId.substring(0, 4)}...): {c.text} */}
           </p>
           ))
         )}
