@@ -4,8 +4,8 @@ import Nav from "react-bootstrap/Nav"
 import { useNavigate } from 'react-router-dom';
 import {Form, FormControl, Button, ButtonGroup, Stack} from "react-bootstrap"
 import Post from "./Post"
-import {db} from "../firebase"
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import {db, auth} from "../firebase"
+import { collection, getDocs, query, orderBy} from "firebase/firestore";
 
 
 function Home(){
@@ -20,7 +20,7 @@ function Home(){
 
 
     const showPosts = async () => {
-      try{
+      try {
         const postsCollection = collection(db, "posts");
         const q = query(postsCollection, orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
@@ -86,7 +86,14 @@ function Home(){
                 <Nav.Link href="/market">Market</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link href="/userprofile">Blog</Nav.Link>
+                <Nav.Link
+                    onClick={() => {
+                        if (auth.currentUser) {
+                           navigate(`/userprofile/${auth.currentUser.uid}`);
+                        }
+                       }}>
+                    Blog
+                </Nav.Link>
             </Nav.Item>
             <Nav.Item>
                 <Nav.Link><img src= "/whiteMessage.png" alt="Messages Icon" className= "nav-icon" onClick = {handleMessages}/></Nav.Link>
@@ -160,6 +167,8 @@ function Home(){
               <Post
               key = {post.id}
               id={post.id}
+              userId = {post.userId}
+              username={post.username}
               title={post.title}
               content= {post.content}
               fileUrl = {post.fileUrl}

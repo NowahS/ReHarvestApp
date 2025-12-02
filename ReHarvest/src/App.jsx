@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import userProfile from './userProfile'
 import Login from './pages/Login'
@@ -28,7 +26,8 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/home" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path= "/userprofile" element={<UserProfile />}/>
+          <Route path="/userprofile" element={<UserProfile />} />
+          <Route path= "/userprofile/:uid" element={<UserProfile />}/>
           <Route path= "/post" element={<Post />} />
           <Route path= "/messages" element={<Messages />}/>
           <Route path="/market"element={<Market />}/>

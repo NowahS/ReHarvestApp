@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { db, auth } from "../firebase";
 import {doc, updateDoc, arrayUnion} from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
-function Post({ id, title, content, initialLikes, initialComments, fileUrl, rating = 0, videoUrl}) {
+function Post({ id, userId, username, title, content, initialLikes, initialComments, fileUrl, rating = 0, videoUrl}) {
   const [currentRating, setCurrentRating] = useState(rating);
   const[likes, setLikes] = useState(initialLikes || 0);
   const[comments, setComments] = useState(initialComments || []);
   const [newCommentText, setNewCommentText] = useState("");
+  const navigate = useNavigate();
 
   //const handleLike = () => setLikes(likes + 1);
   const handleLike = async () => {
@@ -79,7 +81,16 @@ function Post({ id, title, content, initialLikes, initialComments, fileUrl, rati
 
   return (
     <div className="post-container mt-4 p-3 border rounded bg-light" style= {{ maxWidth: "750px", margin: "40px auto"}}>
-      <h4>{title}</h4>
+      <h6>
+        Posted by {" "}
+        <a 
+          className="text-primary text-decoration-underline"
+          onClick={() => navigate(`/userprofile/${userId}`)}
+        >
+          @{username}
+        </a>
+      </h6>
+      <h4><b>{title}</b></h4>
       <p>{content}</p>
 
       {/* Image Display */}

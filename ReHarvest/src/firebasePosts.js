@@ -1,6 +1,14 @@
-import { collection, addDoc, getDoc, serverTimestamp} from "firebase/firestore";
+import { collection, doc, addDoc, getDoc, serverTimestamp} from "firebase/firestore";
 import { db, auth, storage, ref, uploadBytes, getDownloadURL } from "./firebase";
-
+export const getUserData = async (uid) => {
+    if (!uid) return null;
+    const userDocRef = doc(db, "users", uid);
+    const snap = await getDoc(userDocRef);
+    if (snap.exists()) {
+        return snap.data();
+    }
+    return null; 
+}
 export const uploadPost = async (title, content = "", videoUrl = "", rating = 0, file = null, diet = "") => {
   const user = auth.currentUser;
 
@@ -8,9 +16,12 @@ export const uploadPost = async (title, content = "", videoUrl = "", rating = 0,
     alert("You aren't logged in");
     return;
   }
+  const userData = await getUserData(user.uid);
+  const username = userData?.username || "None";
 
   const postData = {
     userId: user.uid,
+    username,
     title: title,
     rating,
     diet,

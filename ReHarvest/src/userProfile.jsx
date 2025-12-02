@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUserBlog, editUserBlog } from "./firebaseBio";
 import { collection, getDocs, query, where} from "firebase/firestore";
 import { uploadPost } from "./firebasePosts";
+import { startConversation } from "./firebaseConvos";
 import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
@@ -13,6 +14,7 @@ import Nav from "react-bootstrap/Nav";
 import Post from "./pages/Post";
 import Card from 'react-bootstrap/Card'
 import { FormLabel } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 
 const UserProfile = () => {
     const [showAddPost, setShowAddPost] = useState(false);
@@ -21,6 +23,10 @@ const UserProfile = () => {
     const [loading, setLoading] = useState(true);
     const[diet, setDiet] = useState("");
 
+    const { uid } = useParams();
+    const user = auth.currentUser;
+    const profileUid = uid || (user ? user.uid : null);
+    const isLoggedUser = user && user.uid === profileUid;
     
     const [file, setFile] = useState(null);
 
@@ -34,32 +40,32 @@ const UserProfile = () => {
 
     useEffect(() => {
     const fetchData = async () => {
-        const user = auth.currentUser;
-        if (user) {
-            const profile = await getUserBlog(user.uid);
-            setProfileData({
-                username: profile.username || "",
-                bio: profile.userBio || "",
-                socials: profile.userSocials || "",
-            })
-            const userPosts = await showUserPosts(user.uid);
-            setPosts(userPosts);
-        }
+        if (!profileUid) return;
+
+        const profile = await getUserBlog(profileUid);
+         setProfileData({
+            username: profile.username || "",
+            bio: profile.userBio || "",
+            socials: profile.userSocials || "",
+        })
+        const userPosts = await showUserPosts(profileUid);
+        setPosts(userPosts);
     };
 
-    const unsubscribe = auth.onAuthStateChanged(() => {
-        fetchData();
-    });
-
-    return () => unsubscribe(); 
-    }, []);
+      fetchData();
+    }, [profileUid]);
 
 
     const handleAddPost = async (e) => {
         e.preventDefault();
         try {
             const newPost = await uploadPost(addPost.title, addPost.content, addPost.videoUrl, 0, file, diet);
-            setPosts(prevPosts => [newPost, ...prevPosts]);
+            if (newPost && newPost.id) {
+                setPosts(prevPosts => [newPost, ...prevPosts]);
+            } 
+            else {
+                console.log("failed to create post");
+            }
             setAddPost({ title: "", content: "", videoUrl: ""});
             setDiet("");
             setFile(null);
@@ -70,15 +76,28 @@ const UserProfile = () => {
         } 
     };
 
-    const showUserPosts = async (uid) => {
-        if (!uid) {
+    const handleStartConversation = async () => {
+        if (!auth.currentUser) return;
+
+        const currentUserId = auth.currentUser.uid;
+        const otherUserId = profileUid;
+
+        const convoId = await startConversation(currentUserId, otherUserId);
+        if (convoId) {
+        navigate(`/messages?convoId=${convoId}`);
+    }
+    }
+
+    const showUserPosts = async (uidParam) => {
+        const idUsed = uidParam || profileUid;
+        if (!idUsed) {
             return;
         }
         try {
         const postsCollection = collection(db, "posts");
         const q = query(
             postsCollection,
-            where("userId", "==", uid)
+            where("userId", "==", idUsed)
         );
 
         const querySnapshot = await getDocs(q);
@@ -161,7 +180,14 @@ const UserProfile = () => {
                     <Nav.Link eventKey="link-2">Market</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link href="/userprofile">Blog</Nav.Link>
+                    <Nav.Link
+                          onClick={() => {
+                             if (auth.currentUser) {
+                                navigate(`/userprofile/${auth.currentUser.uid}`);
+                             }
+                            }}>
+                        Blog
+                    </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link><img src= "/whiteMessage.png" alt="Messages Icon" className= "nav-icon" onClick = {handleMessages}/></Nav.Link>
@@ -180,7 +206,7 @@ const UserProfile = () => {
                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}
                 />
 
-                {isEditing && (
+                {isLoggedUser &&isEditing && (
                     <Form.Group controlId="formFile" className="mb-3" >
                         <FormLabel className="text-muted">Change Profile Picture</FormLabel>
                         <Form.Control 
@@ -192,6 +218,11 @@ const UserProfile = () => {
                 )}
 
                 <h2 className="profile-username">@{profileData.username}</h2>
+                {!isLoggedUser && (
+                    <Button onClick={handleStartConversation}>
+                        Send Message
+                    </Button>
+                )}
 
                 <div className="text-start">
                     <Form.Group className="mb-5">
@@ -225,6 +256,7 @@ const UserProfile = () => {
             </div>
 
             <div className="profile-card-footer p-4 border-0">
+                {isLoggedUser && (
                 <Button
                     variant={isEditing ? "success" : "primary"}
                     className="w-100"
@@ -232,10 +264,13 @@ const UserProfile = () => {
                 >
                     {isEditing ? "Save Changes" : "Edit Profile"}
                 </Button>
-
+                )}
                 <br /><br />
 
+
+                {isLoggedUser && (
                 <Button onClick={() => setShowAddPost(!showAddPost)}>+ Add Post</Button>
+                )}
 
                 {showAddPost && (
                     <Form onSubmit = {handleAddPost}>
@@ -267,13 +302,15 @@ const UserProfile = () => {
 
             </div>
 
-            <h2 className="w-100 text-white mt-4">Your Blog Posts</h2>
+            <h2 className="w-100 text-white mt-4">Blog Posts</h2>
 
            <div>
                 {posts.map(post => (
                     <Post
                     key={post.id}
                     id={post.id}
+                    userId = {post.userId}
+                    username={post.username}
                     title={post.title}
                     content={post.content}
                     fileUrl={post.fileUrl}
