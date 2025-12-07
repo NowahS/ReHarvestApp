@@ -60,7 +60,7 @@ const Market = () =>{
                 <Nav.Link href="/home">Home</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventKey="link-1">About</Nav.Link>
+                <Nav.Link href="/about">About</Nav.Link>
             </Nav.Item>
             <Nav.Item>
                 <Nav.Link href= "/market">Market</Nav.Link>

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { db, auth } from "../firebase";
-import {doc, updateDoc, arrayUnion} from "firebase/firestore";
+import {doc, updateDoc, onSnapshot, arrayUnion} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { updateProfile } from "firebase/auth";
+import { addCommentToPost } from "../firebasePosts";
 
 function Post({ id, userId, username, title, content, initialLikes, initialComments, fileUrl, rating = 0, videoUrl}) {
   const [currentRating, setCurrentRating] = useState(rating);
@@ -10,6 +12,17 @@ function Post({ id, userId, username, title, content, initialLikes, initialComme
   const[comments, setComments] = useState(initialComments || []);
   const [newCommentText, setNewCommentText] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const postRef = doc(db, "posts", id);
+
+    const unsub = onSnapshot(postRef, (snapshot) => {
+      const data = snapshot.data();
+      if (data?.comments) setComments(data.comments);
+    });
+
+    return () => unsub();
+  }, [id]);
 
   //const handleLike = () => setLikes(likes + 1);
   const handleLike = async () => {
@@ -34,34 +47,21 @@ function Post({ id, userId, username, title, content, initialLikes, initialComme
 
   const handleAddComment = async (e) => {
     e.preventDefault();
-    const user = auth.currentUser;
-    if(!user) {
+    if(!auth.currentUser) {
       alert("You must be logged in to comment.");
       return;
     }
     if (newCommentText.trim() === "") return;
-    const commentData = {
-      text: newCommentText.trim(),
-      userId: user.uid,
-      displayName: user.displayName || "Anonymous User",
-    }
-    try{
-      const postRef = doc(db, "posts", id);
-      await updateDoc(postRef, {
-        comments: arrayUnion(commentData),
-      })
-      setComments([...comments, commentData]);
+    const added = await addCommentToPost(id, newCommentText.trim());
+    if (added) {
       setNewCommentText("");
-    } 
-    catch (error) {
-      console.error("Error adding comment:", error);
     }
-  }
+  };
 
 
   /*helper function*/
   function convertToEmbedUrl(url) {
-    const youtubeRegex1 = /youtube\.com\/watch\?v=([^&] +)/;
+    const youtubeRegex1 = /youtube\.com\/watch\?v=([^&]+)/;
     const youtubeRegex2 = /youtu\.be\/([^?]+)/;
 
     let match = url.match(youtubeRegex1);
@@ -150,30 +150,25 @@ function Post({ id, userId, username, title, content, initialLikes, initialComme
       </div>
 
       <div className="mt-3">
-        <h6>Comments:</h6>
-        {comments.length === 0 ? (
-          <p>No comments yet</p>
-        ) : (
-          comments.map((c, i) => (
-          //<p key={i}>• {c}</p>)
+        {comments.length === 0}
+        {comments.map((c, i) => (
           <p key={i}>
-            • **{c.displayName || `User (${c.userId.substring(0, 4)}...)`}**: {c.text}
-            {/*• User ({c.userId.substring(0, 4)}...): {c.text} */}
+            • <b>{c.displayName}</b>: {c.text}
           </p>
-          ))
-        )}
+        ))}
       </div>
-
+      
       <div className="mt-3">
-        <h6>Add Comment</h6>
+        <h3>Comments</h3>
         <form onSubmit={handleAddComment}>
           <input
           type="text"
           value={newCommentText}
           onChange={(e) => setNewCommentText(e.target.value)}
           placeholder="Write your comment..."
+          className="form-control mb-2"
           />
-          <Button variant="success" type="submit" size="sm">
+          <Button variant="success" type="submit">
             Post Comment
           </Button>
         </form>

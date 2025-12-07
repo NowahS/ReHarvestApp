@@ -22,12 +22,11 @@ function About (){
     return (
     <>
     <div className="about-container">
-        <header className="nav-custom">
-            <div className="nav-left">
-                <img src=  "/Logo.png" alt="ReHarvest Logo" className= "logo"/>
+        <header className= "nav-custom">
+            <div className= "nav-left">
+              <img src= "/Logo.png" alt="ReHarvest Logo" className= "logo"/>
             </div>
-            <Nav fill variant="tabs" defaultActiveKey="/about" className="navbar-custom mb-4">
-
+            <Nav fill variant="tabs" defaultActiveKey= "/market" className="navbar-custom mb-4">
             <Nav.Item>
                 <Nav.Link href="/home">Home</Nav.Link>
             </Nav.Item>
@@ -35,7 +34,7 @@ function About (){
                 <Nav.Link href="/about">About</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventKey="link-2">Market</Nav.Link>
+                <Nav.Link href= "/market">Market</Nav.Link>
             </Nav.Item>
             <Nav.Item>
                 <Nav.Link href="/userprofile">Blog</Nav.Link>
@@ -45,11 +44,12 @@ function About (){
             </Nav.Item>
             </Nav>
         </header>
-        <br></br>
     </div>
+        <br></br>
+    
     
     <Container>
-        <div style={{ backgroundColor: 'white', color: 'black', padding: '20px', borderRadius: '15px' }}>
+        <div style={{ backgroundColor: 'white', color: 'black', padding: '20px', borderRadius: '15px'  }}>
             <br></br>
             <h1 className="mb-4 fw-bold">About ReHarvest</h1>
             <br></br>
@@ -148,4 +148,4 @@ function About (){
     </>
     )
 }
-export default About
+export default About;

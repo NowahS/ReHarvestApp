@@ -1,14 +1,39 @@
-import { collection, doc, addDoc, getDoc, serverTimestamp} from "firebase/firestore";
+import { collection, doc, addDoc, getDoc, updateDoc,serverTimestamp, arrayUnion} from "firebase/firestore";
 import { db, auth, storage, ref, uploadBytes, getDownloadURL } from "./firebase";
+import { updateProfile } from "firebase/auth";
+
 export const getUserData = async (uid) => {
     if (!uid) return null;
     const userDocRef = doc(db, "users", uid);
     const snap = await getDoc(userDocRef);
+    const authName = auth.currentUser?.displayName;
     if (snap.exists()) {
-        return snap.data();
+        const data = snap.data();
+
+        return {
+          ...data,
+          displayName: authName || data.username || "Anonymous",
+          username: data.username || authName || "Anonymous"
+        };
     }
     return null; 
 }
+
+export const setUserDisplayName = async (name) => {
+  try {
+    if (!auth.currentUser) return;
+
+    await updateProfile(auth.currentUser, {
+      displayName: name
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Error updating displayName:", error);
+    return false;
+  }
+};
+
 export const uploadPost = async (title, content = "", videoUrl = "", rating = 0, file = null, diet = "") => {
   const user = auth.currentUser;
 
@@ -21,7 +46,8 @@ export const uploadPost = async (title, content = "", videoUrl = "", rating = 0,
 
   const postData = {
     userId: user.uid,
-    username,
+    username: userData?.username || userData?.displayName || "User",
+    displayName: userData?.displayName || userData?.username || "User",
     title: title,
     rating,
     diet,
@@ -54,5 +80,33 @@ export const uploadPost = async (title, content = "", videoUrl = "", rating = 0,
   catch (error) {
     console.error("Error making post:", error);
     alert("Failed to create post");
+  }
+};
+
+export const addCommentToPost = async (postId, text) => {
+  const user = auth.currentUser;
+
+  if (!user) return null;
+
+  const userData = await getUserData(user.uid);
+
+  const commentData = {
+    text,
+    userId: user.uid,
+    displayName: userData.displayName || userData.username,
+    createdAt: serverTimestamp()
+  };
+
+  try {
+    const postRef = doc(db, "posts", postId);
+
+    await updateDoc(postRef, {
+      comments: arrayUnion(commentData)
+    });
+
+    return commentData;
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    return null;
   }
 };
