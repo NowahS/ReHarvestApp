@@ -22,11 +22,11 @@ function About (){
     return (
     <>
     <div className="about-container">
-        <header className= "nav-custom">
+        <header className= "nav-custom d-flex justify-content-between align-items-center p-5">
             <div className= "nav-left">
               <img src= "/Logo.png" alt="ReHarvest Logo" className= "logo"/>
             </div>
-            <Nav fill variant="tabs" defaultActiveKey= "/market" className="navbar-custom mb-4">
+            <Nav fill variant="tabs" defaultActiveKey= "/about" className="navbar-custom">
             <Nav.Item>
                 <Nav.Link href="/home">Home</Nav.Link>
             </Nav.Item>
@@ -67,8 +67,8 @@ function About (){
                 src={Veggies}
                 alt="Veggie"
                 rounded
-                className="mb-3"
-                style={{ width: '850px', maxHeight: '850px', objectFit: 'cover' }}
+                className="mb-3 img-fluid"
+                style={{ width: '100%', maxWidth: '850px', height:'auto', objectFit: 'cover' }}
             />
             <br></br>
             <br></br>
@@ -86,8 +86,8 @@ function About (){
                 src={Market}
                 alt="market"
                 rounded
-                className="mb-3"
-                style={{ width: '500px', height: '500px', objectFit: 'cover' }}
+                className="mb-3 img-fluid"
+                style={{ width: '100%', maxWidth: '500px', height: 'auto', objectFit: 'cover' }}
             />
             <br></br>
             <br></br>
@@ -95,54 +95,59 @@ function About (){
 
             <h3 className="mb-4 fw-bold">Resources</h3>
             <br></br>
-           
-            <div className= "d-flex flex-wrap">
-                <Image
-                    src={Substainablity}
-                    alt= "image"
-                    rounded
-                    className="mb-3 me-4"
-                    style={{ width: '350px', height: '350px', objectFit: 'cover' }}
-                />
-                <Row className="mb-4 align-items-center">
-                    <Col md={30}> 
-                    <p className="mb-4 fw-bold">Learn about sustainable food and farming systems that are benifical to the environment.</p>
-                    <Button variant="success" onClick={handleResource1}>Find out more</Button>
-                    </Col>
-                </Row>
-                <Image
-                    src={Food}
-                    alt= "image"
-                    rounded
-                    className="mb-3 me-4"
-                    style={{ width: '350px', height: '350px', objectFit: 'cover' }}
-                />
-                <Row className="mb-4 align-items-center">
-                    <Col md={30}> 
-                    <p className="mb-4 fw-bold">Shift sustainability from niche to mainstream in the food system.</p>
-                    <Button variant="success" onClick={handleResource2}>Find out more</Button>
-                    </Col>
-                </Row>
-                <br></br>
-                <br></br>
-                <Image
-                    src={Plate}
-                    alt= "image"
-                    rounded
-                    className="mb-3 me-4"
-                    style={{ width: '350px', height: '350px', objectFit: 'cover' }}
-                />
-                <Row className="mb-4 align-items-center">
-                    <Col md={30}> 
-                    <p className="mb-4 fw-bold">Lets help you make food choices that does not harm the environment, animals and people.</p>
-                    <Button variant="success" onClick={handleResource3}>Find out more</Button>
-                    </Col>
-                </Row>
-                <br></br>
-                <br></br>
-            </div>
-        
 
+            <Row className="mb-5 align-items-center">
+               
+                <Col md={6} lg={4} className="mb-3"> 
+                <Image
+                src={Substainablity}
+                alt="image"
+                rounded
+                className="img-fluid" 
+                style={{ height: '350px', objectFit: 'cover' }} 
+            />
+            </Col>
+            
+            <Col md={6} lg={8}> 
+            <p className="mb-4 fw-bold">Learn about sustainable food and farming systems that are benifical to the environment.</p>
+            <Button variant="success" onClick={handleResource1}>Find out more</Button>
+            </Col>
+            </Row>
+            
+            <Row className="mb-5 align-items-center">
+                <Col md={6} lg={4} className="mb-3">
+                <Image
+                src={Food}
+                alt="image"
+                rounded
+                className="img-fluid"
+                style={{ height: '350px', objectFit: 'cover' }}
+            />
+            </Col>
+
+            <Col md={6} lg={8}>
+            <p className="mb-4 fw-bold">Shift sustainability from niche to mainstream in the food system.</p>
+            <Button variant="success" onClick={handleResource2}>Find out more</Button>
+            </Col>
+            </Row>
+
+            <Row className="mb-5 align-items-center">
+                <Col md={6} lg={4} className="mb-3">
+                <Image
+                src={Plate}
+                alt="image"
+                rounded
+                className="img-fluid"
+                style={{ height: '350px', objectFit: 'cover' }}
+            />
+
+            </Col>
+            <Col md={6} lg={8}>
+            <p className="mb-4 fw-bold">Lets help you make food choices that does not harm the environment, animals and people.</p>
+            <Button variant="success" onClick={handleResource3}>Find out more</Button>
+            </Col>
+            </Row>
+            
         </div>
       </Container>
     </>
