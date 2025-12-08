@@ -48,7 +48,7 @@ TOADD picture of the team
 
 * [Sprint planning](https://docs.google.com/spreadsheets/d/1voAlLn6wZZea9wKupuXWM1POCDhOYgSrEWuqKm0XB5s/edit?gid=1415291661#gid=1415291661)
 * [Scrums](https://docs.google.com/document/d/1QkICwuHxrVhfOh2mjb6KgSofr577ENJ2wPVyxBghhCg/edit?usp=sharing)
-* [Sprint demo video]()
+* [Sprint demo video](https://youtu.be/OVv7Ektuy4I)
 * [Sprint retrospective](https://docs.google.com/document/d/1Nvgr71tR5mZxBAyM19A0EEf5RiltGhYT2mDzRqrnw54/edit?usp=sharing)
 
 ## Tools & APIs
