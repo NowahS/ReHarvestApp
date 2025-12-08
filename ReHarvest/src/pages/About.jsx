@@ -22,7 +22,7 @@ function About (){
     return (
     <>
     <div className="about-container">
-        <header className= "nav-custom d-flex justify-content-between align-items-center p-5">
+        <header className= "nav-custom">
             <div className= "nav-left">
               <img src= "/Logo.png" alt="ReHarvest Logo" className= "logo"/>
             </div>
@@ -138,7 +138,7 @@ function About (){
                 alt="image"
                 rounded
                 className="img-fluid"
-                style={{ height: '350px', objectFit: 'cover' }}
+                style={{ height: '400px', objectFit: 'cover' }}
             />
 
             </Col>
