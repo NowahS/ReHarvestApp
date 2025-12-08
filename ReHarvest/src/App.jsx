@@ -14,11 +14,13 @@ import {Button} from 'react-bootstrap'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { APILoader } from "@googlemaps/extended-component-library/react"
 
 
 function App() {
     return(
       <>
+       <APILoader apiKey="AIzaSyBq9f0by38uzDOuG37IwTaylkIHibcu4sY">
       <Router>
         <Routes>
           <Route path="/" element={<Opening />}/>
@@ -33,6 +35,7 @@ function App() {
           <Route path="/market"element={<Market />}/>
         </Routes>
       </Router>
+      </APILoader>
 
       </>
     )
