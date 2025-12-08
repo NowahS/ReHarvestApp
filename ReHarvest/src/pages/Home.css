@@ -4,14 +4,11 @@
 }
 
 .logo {
-  height: 500px;
+  height: 10em;
   width: auto;
   display: block;
   margin: 0 auto;
   cursor: pointer;
-  position: absolute;
-  top: -170px;
-  left: -90px;
 }
 
 .navbar-custom{
@@ -23,6 +20,7 @@
     border-radius: 0;
     padding: 0.5rem 1rem;
     position: relative;
+    z-index: 100;
 }
 
 .nav-left{

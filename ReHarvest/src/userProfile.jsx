@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { db, auth } from "./firebase";
+import { db, auth, storage } from "./firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from 'react-router-dom';
 import { getUserBlog, editUserBlog } from "./firebaseBio";
 import { collection, getDocs, query, where} from "firebase/firestore";
@@ -43,11 +44,13 @@ const UserProfile = () => {
         if (!profileUid) return;
 
         const profile = await getUserBlog(profileUid);
-         setProfileData({
+        setProfileData({
             username: profile.username || "",
             bio: profile.userBio || "",
             socials: profile.userSocials || "",
+            profileImageUrl: profile.profileImageUrl || ProfilePicture
         })
+        setProfileImage(profile.profileImageUrl || ProfilePicture);
         const userPosts = await showUserPosts(profileUid);
         setPosts(userPosts);
     };
@@ -142,8 +145,8 @@ const UserProfile = () => {
     const handleEditSave = async (e) => {
         e.preventDefault();
         if (!isEditing) {
-                setIsEditing(true);
-                return;
+            setIsEditing(true);
+            return;
         }
         try{
             const user = auth.currentUser;
@@ -151,12 +154,20 @@ const UserProfile = () => {
                 alert("You aren't logged in");
                 return;
             }
+            let profileImageUrl = profileImage;
+            if (newProfileFile) {
+                const imgRef = ref(storage, `profileImages/${user.uid}.jpg`);
+                await uploadBytes(imgRef, newProfileFile);
+                profileImageUrl = await getDownloadURL(imgRef);
+            }
             await editUserBlog(
                 profileData.username,
                 profileData.bio,
-                profileData.socials
+                profileData.socials,
+                profileImageUrl
             );
-            setIsEditing(false);            
+            setIsEditing(false); 
+            setProfileImage(profileImageUrl);           
         }
         catch(error){
             console.log(error);

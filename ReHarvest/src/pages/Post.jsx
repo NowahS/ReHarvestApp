@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { db, auth } from "../firebase";
-import {doc, updateDoc, onSnapshot, arrayUnion} from "firebase/firestore";
+import {doc, updateDoc, onSnapshot, arrayUnion, collection, query, orderBy} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
 import { addCommentToPost } from "../firebasePosts";
@@ -14,11 +14,15 @@ function Post({ id, userId, username, title, content, initialLikes, initialComme
   const navigate = useNavigate();
 
   useEffect(() => {
-    const postRef = doc(db, "posts", id);
+    const commentsRef = collection(db, "posts", id, "comments");
+    const q = query(commentsRef, orderBy("createdAt", "asc"));
 
-    const unsub = onSnapshot(postRef, (snapshot) => {
-      const data = snapshot.data();
-      if (data?.comments) setComments(data.comments);
+    const unsub = onSnapshot(q, (snapshot) => {
+      const commentsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setComments(commentsData);
     });
 
     return () => unsub();

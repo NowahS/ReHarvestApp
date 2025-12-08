@@ -70,10 +70,10 @@ function Home(){
     return(
         <>
         <div className="home-container">
-          <header className= "nav-custom">
-            <div className= "nav-left">
+            <div>
               <img src= "/Logo.png" alt="ReHarvest Logo" className= "logo"/>
             </div>
+          <header className= "nav-custom">
             <Nav fill variant="tabs" defaultActiveKey= "/home" className="navbar-custom mb-4">
          
             <Nav.Item>
