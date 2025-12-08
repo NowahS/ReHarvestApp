@@ -45,20 +45,3 @@ body{
   background-color:#40493A;
   font-family: 'Inter', sans-serif;
 }
-
-.nav-custom{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-}
-
-.logo {
-  height: 40px;
-  width: auto;
-}
-
-.navbar-custom {
-    width: 95%;
-    max-width: 950px;
-}

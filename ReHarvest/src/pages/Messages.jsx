@@ -116,7 +116,7 @@ function Messages() {
 
             <div className="messages-content p-4">
                 <div className="row p-4">
-                    <div className="col-md-6 bg-white">
+                    <div className="col-md-6 bg-white p-4 border-end">
                         <div>
                         <h2 className="text-center mt-4">Contacts</h2>
                         </div>

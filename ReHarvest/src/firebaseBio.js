@@ -9,7 +9,7 @@ export const getUserData = async (uid) => {
     }
     return null; 
 }
-export const editUserBlog = async (username, userBio, userSocials) => {
+export const editUserBlog = async (username, userBio, userSocials, profileImageUrl) => {
     const user = auth.currentUser;
 
     if (!user) {
@@ -18,7 +18,7 @@ export const editUserBlog = async (username, userBio, userSocials) => {
     }
     const userBlog = doc(db, "userBlogs", user.uid);
     try {
-        await setDoc(userBlog, {username, userBio, userSocials}, {merge: true});
+        await setDoc(userBlog, {username, userBio, userSocials, profileImageUrl}, {merge: true});
         alert("User blog edited successfully");
     } 
     catch (error) {
@@ -34,11 +34,14 @@ export const getUserBlog = async (uid) => {
    const snap = await getDoc(userBlog);
 
    if (snap.exists()){
-        return snap.data();
+        return {
+            ...snap.data(),
+            profileImageUrl: snap.data().profileImageUrl || null
+        };
    }
    else {
         const userData = await getUserData(uid);
         const userUsername = userData?.username || "";
-        return { username: userUsername, userBio: "", userSocials: "" };
+        return { username: userUsername, userBio: "", userSocials: "", profileImageUrl: null };
    }
 }

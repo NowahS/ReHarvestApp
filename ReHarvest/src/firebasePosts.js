@@ -1,4 +1,4 @@
-import { collection, doc, addDoc, getDoc, updateDoc,serverTimestamp, arrayUnion} from "firebase/firestore";
+import { collection, doc, addDoc, getDoc, updateDoc,serverTimestamp, getDocs, query, orderBy} from "firebase/firestore";
 import { db, auth, storage, ref, uploadBytes, getDownloadURL } from "./firebase";
 import { updateProfile } from "firebase/auth";
 
@@ -93,20 +93,27 @@ export const addCommentToPost = async (postId, text) => {
   const commentData = {
     text,
     userId: user.uid,
-    displayName: userData.displayName || userData.username,
+    displayName: userData.displayName || userData.username || "User",
     createdAt: serverTimestamp()
   };
 
   try {
-    const postRef = doc(db, "posts", postId);
+    const commentsRef = collection(db, "posts", postId, "comments");
+    await addDoc(commentsRef, commentData);
 
-    await updateDoc(postRef, {
-      comments: arrayUnion(commentData)
-    });
-
-    return commentData;
+    return commentData
   } catch (error) {
     console.error("Error adding comment:", error);
     return null;
   }
+};
+
+export const getComments = async (postId) => {
+  const commentsRef = collection(db, "posts", postId, "comments");
+  const q = query(commentsRef, orderBy("createdAt", "asc"));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
 };
