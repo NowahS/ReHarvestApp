@@ -55,7 +55,7 @@ TOADD picture of the team
 
 ## Final delivery
 
-* [Final presentation]()
+* [Final presentation](https://docs.google.com/presentation/d/1al02XmlITbeZLRyj48a6b3U4PLUEv-GT/edit?usp=sharing&ouid=111841249806307615804&rtpof=true&sd=true)
 * [Poster]()
 * [Process description]()
 
