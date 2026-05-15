@@ -186,7 +186,7 @@ const Market = () =>{
                         center-lat= "40.7128"
                         center-lng= "-74.0060"
                         zoom= {13}
-                        map-id = "AIzaSyBq9f0by38uzDOuG37IwTaylkIHibcu4sY"
+                        map-id = "GoogleMaps_ConfigAPIKEY"
                         style={{
                             width: "90%",
                             height: "550px",
