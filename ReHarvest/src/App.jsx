@@ -20,7 +20,7 @@ import { APILoader } from "@googlemaps/extended-component-library/react"
 function App() {
     return(
       <>
-       <APILoader apiKey="AIzaSyBq9f0by38uzDOuG37IwTaylkIHibcu4sY">
+       <APILoader apiKey="BuildConfig.API_KEY">
       <Router>
         <Routes>
           <Route path="/" element={<Opening />}/>
